@@ -1,4 +1,11 @@
-# 小說爬蟲
+# 爬蟲
 
-把爬的小說丟到 `Discuz` 中
-需要填入 `forumDomain`, `fid`, `account`, `password`
+## 3-rd
+
+`python 3`
+
+```
+$ pip install beautifulsoup4
+$ pip install selenium
+$ pip install opencc-python-reimplemented
+```
