@@ -130,7 +130,7 @@ class PosterUI(Frame):
 
         soup, banner, title, author, state, desc = crawelHome(homeLink)
         hrefs = getArticleList(soup, startChapterName)
-        driver = openForum(account, password)
+        driver = openForum(self.forumDomain, account, password)
         if articleLink == '':
             postLink = '{}forum.php?mod=post&action=newthread&fid={}'.format(
                 self.forumDomain, fid)

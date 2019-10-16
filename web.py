@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
+import platform
 
 
 def getTid(url):
@@ -13,10 +14,20 @@ def getTid(url):
     return tid[4:]
 
 
-def openForum(account, password):
+def getDriverPath():
+    sys = platform.system()
+    if 'Linux' in sys:
+        return './driver/linux_chromedriver'
+    elif 'Darwin' in sys:
+        return './driver/mac_chromedriver'
+    elif 'Windows' in sys:
+        return './driver/win_chromedriver.exe'
+
+
+def openForum(forumDomain, account, password):
     options = Options()
     options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome('./chromedriver', chrome_options=options)
+    driver = webdriver.Chrome(getDriverPath(), chrome_options=options)
     driver.set_window_size(1024, 960)
     driver.get("http://woodo.epizy.com/forum.php")
     try:
