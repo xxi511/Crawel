@@ -49,6 +49,8 @@ def getArticleList(rootSoup, startChapterName):
             else:
                 continue
         href = atag['href']
+        if 'vip' in href:
+            break
         hrefs.append(href)
     return hrefs
 
@@ -67,7 +69,7 @@ def crawelArticle(href):
     return newContent
 
 if __name__ == '__main__':
-    homeLink = 'https://book.sfacg.com/Novel/251783/'
+    homeLink = 'http://book.sfacg.com/Novel/210249/'
     # https://book.sfacg.com/Novel/57082/MainIndex/
     soup, banner, title, author, state, desc = crawelHome(homeLink)
     hrefs = getArticleList(soup, '')
