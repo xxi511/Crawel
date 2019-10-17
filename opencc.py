@@ -114,7 +114,7 @@ class OpenCC:
 
         self._dict_chain = []
         config = self.conversion + '.json'
-        config_file = './config/{}'.format(config)
+        config_file = './config/{}'.format( config)
         with open(config_file) as f:
             setting_json = json.load(f)
 
@@ -163,7 +163,7 @@ class OpenCC:
             dict_chain.append(chain)
         elif dict_dict.get('type') == 'txt':
             filename = dict_dict.get('file')
-            dict_file = './dictionary/{}'.format(filename)
+            dict_file = './dictionary/{}'.format( filename)
             dict_chain.append(dict_file)
 
     def set_conversion(self, conversion):

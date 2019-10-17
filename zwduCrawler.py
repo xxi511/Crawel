@@ -1,3 +1,4 @@
+#coding=utf-8
 import requests
 from bs4 import BeautifulSoup
 from format import format, s2tw
@@ -6,7 +7,7 @@ from format import format, s2tw
 def getSoup(link):
     resp = requests.get(link)
     resp.encoding = "gbk"
-    soup = BeautifulSoup(resp.text, 'lxml')
+    soup = BeautifulSoup(resp.text, 'html.parser')
     return soup
 
 

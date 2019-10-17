@@ -38,7 +38,7 @@ def openForum(forumDomain, account, password):
         return driver
     except:
         driver.quit()
-        raise 'Open forum failed'
+        raise ValueError('Open forum failed')
 
 
 def login(driver, account, password):
@@ -52,7 +52,7 @@ def login(driver, account, password):
         return driver
     except:
         driver.quit()
-        raise 'Login failed'
+        raise ValueError('Login failed')
 
 
 def postCover(driver, postLink, banner, title, author, state, desc, subCategoryIdx):
@@ -72,8 +72,17 @@ def postCover(driver, postLink, banner, title, author, state, desc, subCategoryI
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "subject"))
         )
-        driver.find_element_by_css_selector('#subject').send_keys(title)
+        driver.find_element_by_css_selector('#subject').send_keys(_title)
         driver.find_element_by_css_selector('#e_textarea').send_keys(content)
+        setSubCategory(driver, subCategoryIdx)
+        driver.find_element_by_css_selector('#postsubmit').click()
+        return checkPostState(driver)
+    except:
+        driver.quit()
+        raise ValueError('post novel cover failed')
+
+def setSubCategory(driver, subCategoryIdx):
+    try:
         ulEle = driver.find_element_by_css_selector('#typeid_ctrl_menu')
         style = 'width: 80px; position: absolute; z-index: 301; left: 7.2px; top: 298.6px;'
         driver.execute_script(
@@ -82,12 +91,8 @@ def postCover(driver, postLink, banner, title, author, state, desc, subCategoryI
         for idx, li in enumerate(eles):
             if idx == subCategoryIdx:
                 li.click()
-        driver.find_element_by_css_selector('#postsubmit').click()
-        return checkPostState(driver)
     except:
-        driver.quit()
-        raise 'post novel cover failed'
-
+        print('a')
 
 def checkPostState(driver):
     try:
@@ -98,7 +103,7 @@ def checkPostState(driver):
         return getTid(url)
     except:
         driver.quit()
-        raise 'post novel failed'
+        raise ValueError('post novel failed')
 
 
 def postArticle(driver, postLink, content):
@@ -114,4 +119,4 @@ def postArticle(driver, postLink, content):
         return checkPostState(driver)
     except:
         driver.quit()
-        raise 'post novel article failed'
+        raise ValueError('post novel article failed')

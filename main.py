@@ -1,5 +1,5 @@
 # coding: utf-8
-from zwduCrawler import crawelHome, getArticleList, crawelArticle
+from crawler import Crawler
 from web import openForum, postCover, postArticle,  getTid
 from tkinter import messagebox, Tk, LEFT, X, Text, RIGHT, END, E
 from tkinter.ttk import Label, Button, Entry, Progressbar, Frame, Style
@@ -9,7 +9,7 @@ import tkinter.font as tkFont
 class PosterUI(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
-        self.forumDomain = ""
+        self.forumDomain = "http://woodo.epizy.com/"
         self.pack()
         self.parent = parent
         self.parent.title('AutoPost')
@@ -60,7 +60,7 @@ class PosterUI(Frame):
 
     def clickBtn(self):
         if not self.checkurl():
-            messagebox.showerror('網址錯誤', '這不是八一中文的網址')
+            messagebox.showerror('網址錯誤', '這不是八一中文或SF的網址')
             return
         elif not self.checkAccountPassword():
             messagebox.showerror('帳密錯誤', '是空的喔')
@@ -79,7 +79,7 @@ class PosterUI(Frame):
     def checkurl(self):
         # https://www.zwdu.com/book/32934/
         urlStr = self.urlEntry.get()
-        return urlStr.startswith('https://www.zwdu.com')
+        return 'zwdu.com' in urlStr or 'book.sfacg.com' in urlStr
 
     def checkAccountPassword(self):
         _account = self.accountEntry.get()
@@ -127,31 +127,31 @@ class PosterUI(Frame):
                        password, articleLink, fid, subCategoryIdx)
 
     def startWork(self, homeLink, startChapterName, account, password, articleLink, fid, subCategoryIdx):
-
-        soup, banner, title, author, state, desc = crawelHome(homeLink)
-        hrefs = getArticleList(soup, startChapterName)
+        crawler = Crawler()
+        soup, banner, title, author, state, desc = crawler.crawelHome(homeLink)
+        hrefs = crawler.getArticleList(soup, startChapterName)
         driver = openForum(self.forumDomain, account, password)
         if articleLink == '':
             postLink = '{}forum.php?mod=post&action=newthread&fid={}'.format(
                 self.forumDomain, fid)
             tid = postCover(driver, postLink, banner, title,
                             author, state, desc, subCategoryIdx)
-            self.startPostChapter(driver, tid, hrefs, fid)
+            self.startPostChapter(crawler, driver, tid, hrefs, fid)
         else:
             tid = getTid(articleLink)
-            self.startPostChapter(driver, tid, hrefs, fid)
+            self.startPostChapter(crawler, driver, tid, hrefs, fid)
 
-    def startPostChapter(self, driver, tid, sourceHrefs, fid):
+    def startPostChapter(self, crawler, driver, tid, sourceHrefs, fid):
         postLink = '{}forum.php?mod=post&action=reply&fid={}&extra=&tid={}'.format(
             self.forumDomain, fid, tid)
         for href in sourceHrefs:
-            content = crawelArticle(href)
+            content = crawler.crawelArticle(href)
             postArticle(driver, postLink, content)
 
 
 if __name__ == '__main__':
     root = Tk()
     root.resizable(0, 0)
-    root.geometry("400x200")  # wxh
+    root.geometry("500x250")  # wxh
     app = PosterUI(root)
     app.mainloop()
