@@ -34,12 +34,16 @@ def getArticleList(soup, startChapterName):
     shouldStart = False
     hrefs = []
     for atag in soup.select('#list dl dd a'):
+        href = atag['href']
         if not shouldStart:
             if startChapterName in atag.get_text():
                 shouldStart = True
+            elif startChapterName in href:
+                shouldStart = True
+            elif href in startChapterName:
+                shouldStart = True
             else:
                 continue
-        href = atag['href']
         hrefs.append(href)
     return hrefs
 

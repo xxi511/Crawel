@@ -14,7 +14,7 @@ def s2tw(content):
 def format(content):
     newContent = trimSpace(content)
     replace = replacement(newContent)
-    return replace
+    return trimSpace(replace)
 
 
 def trimSpace(content):
@@ -38,11 +38,16 @@ def trimSpace(content):
 def replacement(content):
     newContent = content
     arr = loadData()
+    patterns = ['Ｗ.*Ｗ.*Ｗ.*Ｃ.*Ｏ.*Ｍ.*', '[\?]*八.*[網网]*[\?]*']
+    for pattern in patterns:
+        newContent = re.sub(pattern, '', newContent)
     for d in arr:
         olds = d['olds']
         news = d['news'] if d['news'] != '!@#$%' else ''
         if '*' in olds:
             olds = re.sub('\*', '\*', olds)
+        if '?' in olds:
+            olds = re.sub('\?', '\?', olds)
         newContent = re.sub(r'{}'.format(olds), news, newContent)
     return newContent
 

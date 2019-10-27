@@ -43,12 +43,16 @@ def getArticleList(rootSoup, startChapterName):
     shouldStart = False
     hrefs = []
     for atag in soup.select('div.catalog-list ul.clearfix li a'):
+        href = atag['href']
         if not shouldStart:
             if startChapterName in atag.get_text():
                 shouldStart = True
+            elif startChapterName in href:
+                shouldStart = True
+            elif href in startChapterName:
+                shouldStart = True
             else:
                 continue
-        href = atag['href']
         if 'vip' in href:
             break
         hrefs.append(href)
