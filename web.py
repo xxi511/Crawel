@@ -72,6 +72,8 @@ def postCover(driver, postLink, banner, title, author, state, desc, subCategoryI
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "subject"))
         )
+        driver.find_element_by_css_selector('#extra_tag_chk').click()
+        driver.find_element_by_css_selector('#tags').send_keys(author)
         driver.find_element_by_css_selector('#subject').send_keys(_title)
         driver.find_element_by_css_selector('#e_textarea').send_keys(content)
         setSubCategory(driver, subCategoryIdx)
@@ -96,7 +98,7 @@ def setSubCategory(driver, subCategoryIdx):
 
 def checkPostState(driver):
     try:
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.ID, "postlist"))
         )
         url = driver.current_url
@@ -109,7 +111,7 @@ def checkPostState(driver):
 def postArticle(driver, postLink, content):
     driver.get(postLink)
     try:
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.ID, "e_textarea"))
         )
         areaEle = driver.find_element_by_css_selector('#e_textarea')

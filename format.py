@@ -1,3 +1,4 @@
+# coding: utf-8
 import re
 from opencc import OpenCC
 
@@ -38,7 +39,7 @@ def trimSpace(content):
 def replacement(content):
     newContent = content
     arr = loadData()
-    patterns = ['Ｗ.*Ｗ.*Ｗ.*Ｃ.*Ｏ.*Ｍ.*', '[\?]*八.*[網网]*[\?]*']
+    patterns = ['Ｗ.*Ｗ.*Ｗ.*Ｃ.*Ｏ.*Ｍ.*', '[\?]*八.*一.*中.*文.*[網网]*[\?]*']
     for pattern in patterns:
         newContent = re.sub(pattern, '', newContent)
     for d in arr:

@@ -146,6 +146,9 @@ class PosterUI(Frame):
             self.forumDomain, fid, tid)
         for href in sourceHrefs:
             content = crawler.crawelArticle(href)
+            if len(content) < 300:
+                # 請假章節
+                continue
             postArticle(driver, postLink, content)
 
 
