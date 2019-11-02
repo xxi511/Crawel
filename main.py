@@ -10,6 +10,7 @@ class PosterUI(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
         self.forumDomain = "http://woodo.epizy.com/"
+        self.driver = None
         self.pack()
         self.parent = parent
         self.parent.title('AutoPost')
@@ -130,16 +131,17 @@ class PosterUI(Frame):
         crawler = Crawler()
         soup, banner, title, author, state, desc = crawler.crawelHome(homeLink)
         hrefs = crawler.getArticleList(soup, startChapterName)
-        driver = openForum(self.forumDomain, account, password)
+        if self.driver is None:
+            self.driver = openForum(self.forumDomain, account, password)
         if articleLink == '':
             postLink = '{}forum.php?mod=post&action=newthread&fid={}'.format(
                 self.forumDomain, fid)
-            tid = postCover(driver, postLink, banner, title,
+            tid = postCover(self.driver, postLink, banner, title,
                             author, state, desc, subCategoryIdx)
-            self.startPostChapter(crawler, driver, tid, hrefs, fid)
+            self.startPostChapter(crawler, self.driver, tid, hrefs, fid)
         else:
             tid = getTid(articleLink)
-            self.startPostChapter(crawler, driver, tid, hrefs, fid)
+            self.startPostChapter(crawler, self.driver, tid, hrefs, fid)
 
     def startPostChapter(self, crawler, driver, tid, sourceHrefs, fid):
         postLink = '{}forum.php?mod=post&action=reply&fid={}&extra=&tid={}'.format(
@@ -148,7 +150,8 @@ class PosterUI(Frame):
             content = crawler.crawelArticle(href)
             if len(content) < 300:
                 # 請假章節
-                continue
+                self.btn.config(state="normal")
+                break
             postArticle(driver, postLink, content)
 
 
