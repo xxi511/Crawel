@@ -4,6 +4,7 @@ from opencc import OpenCC
 
 cc = OpenCC('s2tw')
 wordDic = []
+regexArr = []
 
 
 def s2tw(content):
@@ -13,22 +14,23 @@ def s2tw(content):
 
 
 def format(content):
-    newContent = trimSpace(content)
-    replace = replacement(newContent)
-    return trimSpace(replace)
+    newContent = replacement(content)
+    result = trimSpace(newContent)
+
+    return trimSpace(result)
 
 
 def trimSpace(content):
     newContent = re.sub(r'\xa0', '\r\n', content)
     newContent = re.sub(r'\u3000', '', newContent)
-    newContent = re.sub(r'\n', '', newContent)
-    splits = newContent.split('\r')
+    newContent = re.sub(r'\r', '', newContent)
+    splits = newContent.split('\n')
     newSplits = []
     for idx, sen in enumerate(splits):
         _sen = sen.strip()
         if _sen == '':
             continue
-        if (idx != 0):
+        if (len(newSplits) != 0):
             _sen = '　　' + sen.strip()
         newSplits.append(_sen)
 
@@ -39,7 +41,7 @@ def trimSpace(content):
 def replacement(content):
     newContent = content
     arr = loadData()
-    patterns = ['Ｗ.*Ｗ.*Ｗ.*Ｃ.*Ｏ.*Ｍ.*', '[\?]*八.*一.*中.*文.*[網网]*[\?]*']
+    patterns = loadRegexData()
     for pattern in patterns:
         newContent = re.sub(pattern, '', newContent)
     for d in arr:
@@ -63,3 +65,12 @@ def loadData():
             d = {'olds': old, 'news': new}
             wordDic.append(d)
     return wordDic
+
+def loadRegexData():
+    if len(regexArr) > 0:
+        return regexArr
+
+    with open('regex.txt', 'r', encoding='utf-8-sig') as f:
+        for line in f:
+            regexArr.append(line)
+    return regexArr

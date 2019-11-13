@@ -6,7 +6,7 @@
 $ pyinstaller -F -n AutoPost -w main.py
 ```
 
-將 `config/`, `dictionary/`, `driver/`, `data.txt` 複製到 `dist/` 中
+將 `config/`, `dictionary/`, `driver/`, `data.txt` , `regex.txt`複製到 `dist/` 中
 
 ## Chrome driver
 
