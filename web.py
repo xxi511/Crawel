@@ -80,8 +80,9 @@ def postCover(driver, postLink, banner, title, author, state, desc, subCategoryI
         driver.find_element_by_css_selector('#postsubmit').click()
         return checkPostState(driver)
     except:
-        driver.quit()
-        raise ValueError('post novel cover failed')
+        return 'failed, post novel conver'
+        # driver.quit()
+        # raise ValueError('post novel cover failed')
 
 def setSubCategory(driver, subCategoryIdx):
     try:
@@ -104,8 +105,9 @@ def checkPostState(driver):
         url = driver.current_url
         return getTid(url)
     except:
-        driver.quit()
-        raise ValueError('post novel failed')
+        return 'failed, check post state'
+        # driver.quit()
+        # raise ValueError('post novel failed')
 
 
 def postArticle(driver, postLink, content):
@@ -120,5 +122,6 @@ def postArticle(driver, postLink, content):
         driver.find_element_by_css_selector('#postsubmit').click()
         return checkPostState(driver)
     except:
-        driver.quit()
-        raise ValueError('post novel article failed')
+        return 'failed, post novel article'
+        # driver.quit()
+        # raise ValueError('post novel article failed')

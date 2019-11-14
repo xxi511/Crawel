@@ -138,6 +138,9 @@ class PosterUI(Frame):
                 self.forumDomain, fid)
             tid = postCover(self.driver, postLink, banner, title,
                             author, state, desc, subCategoryIdx)
+            if tid.startswith('failed,'):
+                self.unlockButton()
+                return
             self.startPostChapter(crawler, self.driver, tid, hrefs, fid)
         else:
             tid = getTid(articleLink)
@@ -148,11 +151,18 @@ class PosterUI(Frame):
             self.forumDomain, fid, tid)
         for href in sourceHrefs:
             content = crawler.crawelArticle(href)
-            if len(content) < 300:
+            if len(content) < 400:
                 # 請假章節
-                self.btn.config(state="normal")
+                self.unlockButton()
                 break
-            postArticle(driver, postLink, content)
+            res = postArticle(driver, postLink, content)
+            if res.startswith('failed,'):
+                self.unlockButton()
+                break
+
+    def unlockButton(self):
+        self.btn.config(state="normal")
+        messagebox.showinfo('通知', '自動刊登暫停，更新完設定後請繼續')
 
 
 if __name__ == '__main__':
