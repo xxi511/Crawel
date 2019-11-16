@@ -17,13 +17,11 @@ def crawelHome(homeLink):
     title = s2tw(soup.select_one('#info h1').get_text())
     info_ps = soup.select('#info p')
     author = ''
-    state = ''
+    state = '(連載中)'
     for p in info_ps:
         text = p.get_text()
         if '作\xa0\xa0\xa0\xa0者' in text:
             author = s2tw(text.split('：')[1].strip())
-        elif '状\xa0\xa0\xa0\xa0态：' in text:
-            state = '(已完結)' if '已完结' in text else '(連載中)'
 
     descText = s2tw(soup.select_one('#intro p').get_text())
     desc = format(descText)

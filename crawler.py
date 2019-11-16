@@ -1,10 +1,12 @@
+# coding: utf-8
 from zwduCrawler import crawelHome as zwCrawelHome, getArticleList as zwGetArticleList, crawelArticle as zwCrawelArticle
 from sfCrawler import crawelHome as sfCrawelHome, getArticleList as sfGetArticleList, crawelArticle as sfCrawelArticle
 from hjCrawler import crawelHome as hjCrawelHome, getArticleList as hjGetArticleList, crawelArticle as hjCrawelArticle
+from wenkuCrawler import  crawelHome as wenCrawelHome, getArticleList as wenGetArticleList, crawelArticle as wenCrawelArticle
 
 class Crawler:
     def __init__(self):
-        self.support = ['sf', 'zwdu', 'hj']
+        self.support = ['sf', 'zwdu', 'hj', 'wenku']
         self.site = ''
 
     def crawelHome(self, homeLink):
@@ -17,6 +19,9 @@ class Crawler:
         elif 'hjwzw.com' in homeLink:
             self.site = 'hj'
             return hjCrawelHome(homeLink)
+        elif 'wenku8.net' in homeLink:
+            self.site = 'wenku'
+            return wenCrawelHome(homeLink)
         else:
             raise ValueError('Unsupport source website')
 
@@ -27,6 +32,8 @@ class Crawler:
             return  zwGetArticleList(rootSoup, startChapterName)
         elif self.site == 'hj':
             return hjGetArticleList(rootSoup, startChapterName)
+        elif self.site == 'wenku':
+            return wenGetArticleList(rootSoup, startChapterName)
 
     def crawelArticle(self, href):
         if self.site == 'sf':
@@ -35,3 +42,5 @@ class Crawler:
             return zwCrawelArticle(href)
         elif self.site == 'hj':
             return hjCrawelArticle(href)
+        elif self.site == 'wenku':
+            return wenCrawelArticle(href)

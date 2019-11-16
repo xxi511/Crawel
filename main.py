@@ -1,9 +1,8 @@
 # coding: utf-8
 from crawler import Crawler
 from web import openForum, postCover, postArticle,  getTid
-from tkinter import messagebox, Tk, LEFT, X, Text, RIGHT, END, E
-from tkinter.ttk import Label, Button, Entry, Progressbar, Frame, Style
-import tkinter.font as tkFont
+from tkinter import messagebox, Tk, E
+from tkinter.ttk import Label, Button, Entry, Frame
 
 
 class PosterUI(Frame):
@@ -61,7 +60,7 @@ class PosterUI(Frame):
 
     def clickBtn(self):
         if not self.checkurl():
-            messagebox.showerror('網址錯誤', '這不是八一中文或SF的網址')
+            messagebox.showerror('網址錯誤', '這不是八一中文, SF, 黃金屋, 輕小說文庫的網址')
             return
         elif not self.checkAccountPassword():
             messagebox.showerror('帳密錯誤', '是空的喔')
@@ -80,7 +79,11 @@ class PosterUI(Frame):
     def checkurl(self):
         # https://www.zwdu.com/book/32934/
         urlStr = self.urlEntry.get()
-        return 'zwdu.com' in urlStr or 'book.sfacg.com' in urlStr
+        support = ['zwdu.com', 'book.sfacg.com', 'hjwzw.com', 'wenku8.net']
+        for s in support:
+            if s in urlStr:
+                return True
+        return False
 
     def checkAccountPassword(self):
         _account = self.accountEntry.get()
