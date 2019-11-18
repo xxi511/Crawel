@@ -72,5 +72,7 @@ def loadRegexData():
 
     with open('regex.txt', 'r', encoding='utf-8-sig') as f:
         for line in f:
-            regexArr.append(line)
+            txt = line.replace('\n', '')
+            txt = txt.replace('/', '\/')
+            regexArr.append(txt)
     return regexArr

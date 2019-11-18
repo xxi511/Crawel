@@ -1,5 +1,6 @@
 import requests
 import re
+import base64
 from bs4 import BeautifulSoup
 from format import format, s2tw
 
@@ -54,14 +55,38 @@ def crawelArticle(href):
     for h2 in h2s:
         h2Texts.append(s2tw(h2.get_text()))
     title = ' '.join(h2Texts)
-    contentTexts = []
-    contents = soup.select('#content div')
-    for c in contents:
-        contentTexts.append(c.get_text())
+    contentTexts = rearrange(soup)
     content = '\n\r'.join(contentTexts)
     content = s2tw(content)
     newContent = format(title + '\n\r\n' + content)
     return newContent
+
+def rearrange(soup):
+    # soup = getSoup('href')
+    b64Data = soup.find_all('meta')[4]['content']
+    b64Decode = base64.b64decode(b64Data).decode('utf8')
+    indexRefs = re.split(r'[A-Z]+%', b64Decode)
+    indexRefs = list(map(int,indexRefs))
+    contentDiv = soup.select_one('#content')
+    star = 0
+    children = list(contentDiv.children)
+    for i, ele in enumerate(children):
+        if ele.name == 'h2':
+            star = i + 1
+        elif ele.name == 'div' and (not ele.has_attr('class') or ele['class'] is not 'chapter'):
+            break
+
+    real = [None] * len(indexRefs)
+    j = 0
+    for i, ele in enumerate(indexRefs):
+        if indexRefs[i] < 5:
+            real[indexRefs[i]] = children[i + star].decode_contents()
+            j += 1
+        else:
+            real[indexRefs[i] - j] = children[i + star].decode_contents()
+
+    return real
+
 
 if __name__ == '__main__':
     homeLink = 'https://hetushu.com/book/91/index.html'

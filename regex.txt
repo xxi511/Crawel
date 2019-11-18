@@ -11,3 +11,17 @@
 校對.*
 最新最全的.*
 本文來自.*
+<acronym>.*</acronym>
+<bdo>.*</bdo>
+<big>.*</big>
+<cite>.*</cite>
+<code>.*</code>
+<dfn>.*</dfn>
+<kbd>.*</kbd>
+<q>.*</q>
+<s>.*</s>
+<samp>.*</samp>
+<strike>.*</strike>
+<tt>.*</tt>
+<u>.*</u>
+<var>.*</var>
