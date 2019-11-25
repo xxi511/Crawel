@@ -47,8 +47,11 @@ def getArticleList(rootSoup, startChapterName):
 
 def crawelArticle(href):
     soup = getSoup(href)
+    soup.p.decompose()
     title = format(s2tw(soup.select_one('#main .inner h1').get_text()))
-    content = s2tw(soup.select_one('#main .inner #BookText').get_text())
+    pre_content = s2tw(soup.select_one('#main .inner #BookText').decode_contents())
+    contents = pre_content.split(r'<br/><br/>')
+    content = "\n".join(contents)
     newContent = format(title + '\n\r\n' + content)
     return newContent
 

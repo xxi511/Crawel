@@ -22,6 +22,7 @@ def format(content):
 
 def trimSpace(content):
     newContent = re.sub(r'\xa0', '\r\n', content)
+    newContent = re.sub(r'\t', '', newContent)
     newContent = re.sub(r'\u3000', '', newContent)
     newContent = re.sub(r'\r', '', newContent)
     splits = newContent.split('\n')

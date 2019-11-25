@@ -162,6 +162,7 @@ class PosterUI(Frame):
             if res.startswith('failed,'):
                 self.unlockButton()
                 break
+        self.unlockButton()
 
     def unlockButton(self):
         self.btn.config(state="normal")
