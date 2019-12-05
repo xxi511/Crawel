@@ -16,7 +16,7 @@ def getSoup(link):
 def crawelHome(homeLink):
     soup = getSoup(homeLink)
     infoDiv = soup.select_one('div.book_info.finish')
-    banner = 'https://hetushu.com' + infoDiv.select_one('img')['src']
+    banner = 'https:' + infoDiv.select_one('img')['src']
 
     title = s2tw(infoDiv.select_one('h2').get_text())
     author = s2tw(infoDiv.select_one('div').get_text())[3:]
