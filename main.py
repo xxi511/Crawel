@@ -79,7 +79,8 @@ class PosterUI(Frame):
     def checkurl(self):
         # https://www.zwdu.com/book/32934/
         urlStr = self.urlEntry.get()
-        support = ['zwdu.com', 'book.sfacg.com', 'hjwzw.com', 'wenku8.net', 'hetushu.com', 'hetubook.com', 'zssq.cc']
+        support = ['zwdu.com', 'book.sfacg.com', 'hjwzw.com', 'wenku8.net',
+                   'hetushu.com', 'hetubook.com', 'zssq.cc', 'czbooks.net', 'quanben.io', 'dingdian.org']
         for s in support:
             if s in urlStr:
                 return True

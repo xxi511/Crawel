@@ -5,7 +5,7 @@ from format import format
 
 def getSoup(link):
     resp = requests.get(link)
-    soup = BeautifulSoup(resp.text, 'lxml')
+    soup = BeautifulSoup(resp.text, 'html.parser')
     return soup
 
 
@@ -17,19 +17,28 @@ def crawelHome(homeLink):
     author = authorText.split(':')[1].strip()
     stateText = soup.select_one(
         'div.novel-detail div.state table').get_text()
-    state = "(已完結)" if '已完結' in stateText else '(連載中)'
+    state = '(連載中)'
     descText = soup.select_one('div.novel-detail div.description').get_text()
     desc = format(descText)
     return soup, banner, title, author, state, desc
 
 
-def getArticleList(soup, startFrom):
-    for idx, atag in enumerate(soup.select('ul.nav.chapter-list li a')):
-        if idx + 1 < startFrom - 1:
-            continue
-        print(atag)
+def getArticleList(rootSoup, startChapterName):
+    shouldStart = False
+    hrefs = []
+    for atag in rootSoup.select('ul.nav.chapter-list li a'):
         href = atag['href']
-        crawelArticle(href)
+        if not shouldStart:
+            if startChapterName in atag.get_text():
+                shouldStart = True
+            elif startChapterName in href:
+                shouldStart = True
+            elif href in startChapterName:
+                shouldStart = True
+            else:
+                continue
+        hrefs.append(atag['href'])
+    return hrefs
 
 
 def crawelArticle(href):
@@ -39,3 +48,13 @@ def crawelArticle(href):
     content = soup.select_one('div.content').get_text()
     newContent = format(title + '\n\r\n' + content)
     return newContent
+
+
+if __name__ == '__main__':
+    homeLink = 'https://czbooks.net/n/cpn92df'
+    soup, banner, title, author, state, desc = crawelHome(homeLink)
+    hrefs = getArticleList(soup, '')
+    for h in hrefs:
+        a = crawelArticle(h)
+        print(a)
+    print('a')

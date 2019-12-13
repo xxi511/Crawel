@@ -4,11 +4,14 @@ from sfCrawler import crawelHome as sfCrawelHome, getArticleList as sfGetArticle
 from hjCrawler import crawelHome as hjCrawelHome, getArticleList as hjGetArticleList, crawelArticle as hjCrawelArticle
 from wenkuCrawler import crawelHome as wenCrawelHome, getArticleList as wenGetArticleList, crawelArticle as wenCrawelArticle
 from hetuCrawler import crawelHome as hetuCrawelHome, getArticleList as hetuGetArticleList, crawelArticle as hetuCrawelArticle
-from zssqCrawler import  crawelHome as zssqCrawelHome, getArticleList as zssqGetArticleList, crawelArticle as zssqCrawelArticle
+from zssqCrawler import crawelHome as zssqCrawelHome, getArticleList as zssqGetArticleList, crawelArticle as zssqCrawelArticle
+from czbookCrawler import crawelHome as caCrawelHome, getArticleList as czGetArticleList, crawelArticle as czCrawelArticle
+from quanbenCrawler import crawelHome as quanCrawelHome, getArticleList as quanGetArticleList, crawelArticle as quanCrawelArticle
+from dingdianCrawler import crawelHome as dingCrawelHome, getArticleList as dingGetArticleList, crawelArticle as dingCrawelArticle
 
 class Crawler:
     def __init__(self):
-        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq']
+        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben', 'dingdian']
         self.site = ''
 
     def crawelHome(self, homeLink):
@@ -30,6 +33,15 @@ class Crawler:
         elif 'zssq.cc' in homeLink:
             self.site = 'zssq'
             return zssqCrawelHome(homeLink)
+        elif 'czbooks.net' in homeLink:
+            self.site = 'czbook'
+            return caCrawelHome(homeLink)
+        elif 'quanben.io' in homeLink:
+            self.site = 'quanben'
+            return quanCrawelHome(homeLink)
+        elif 'dingdian.org' in homeLink:
+            self.site = 'dingdian'
+            return  dingCrawelHome(homeLink)
         else:
             raise ValueError('Unsupport source website')
 
@@ -46,6 +58,12 @@ class Crawler:
             return hetuGetArticleList(rootSoup, startChapterName)
         elif self.site == 'zssq':
             return zssqGetArticleList(rootSoup, startChapterName)
+        elif self.site == 'czbook':
+            return czGetArticleList(rootSoup, startChapterName)
+        elif self.site == 'quanben':
+            return quanGetArticleList(rootSoup, startChapterName)
+        elif self.site == 'dingdian':
+            return dingGetArticleList(rootSoup, startChapterName)
 
     def crawelArticle(self, href):
         if self.site == 'sf':
@@ -60,3 +78,9 @@ class Crawler:
             return hetuCrawelArticle(href)
         elif self.site == 'zssq':
             return zssqCrawelArticle(href)
+        elif self.site == 'czbook':
+            return czCrawelArticle(href)
+        elif self.site == 'quanben':
+            return quanCrawelArticle(href)
+        elif self.site == 'dingdian':
+            return dingCrawelArticle(href)
