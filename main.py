@@ -8,7 +8,7 @@ from tkinter.ttk import Label, Button, Entry, Frame
 class PosterUI(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
-        self.forumDomain = "http://woodo.epizy.com/"
+        self.forumDomain = "https://woodo.club/"
         self.driver = None
         self.pack()
         self.parent = parent

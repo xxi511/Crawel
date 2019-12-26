@@ -29,7 +29,7 @@ def openForum(forumDomain, account, password):
     options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(getDriverPath(), chrome_options=options)
     driver.set_window_size(1024, 960)
-    driver.get("http://woodo.epizy.com/forum.php")
+    driver.get("https://woodo.club/forum.php")
     try:
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "lsform"))

@@ -1,5 +1,6 @@
 #coding=utf-8
 import requests
+import re
 from bs4 import BeautifulSoup
 from format import format, s2tw
 
@@ -52,6 +53,7 @@ def getArticleList(soup, startChapterName):
 def crawelArticle(href):
     link = 'http://www.quanben.io' + href
     soup = getSoup(link)
+    # loadMore(soup)
     title = s2tw(soup.select_one('h1.headline').get_text())
     contentTexts = []
     contents = soup.select('#content p')
@@ -62,6 +64,17 @@ def crawelArticle(href):
     newContent = format(title + '\n\r\n' + content)
     return newContent
 
+def loadMore(soup):
+    loadStr = soup.select_one("div.more a")['onclick']
+    loadPattern = r"'([a-zA-Z0-9]*)'"
+    loadMatch = re.findall(loadPattern, loadStr)
+
+    script = soup.find('script', type='text/javascript').text
+    pattern = r"myScript.src = [\S].*pinyin="
+    match = re.search(pattern, script).group()
+    link = "http://www.quanben.io" + match[16:] + loadMatch[0] + "&id=" + loadMatch[1]
+    resp = requests.get(link)
+    resp.encoding = "utf-8"
 
 if __name__ == '__main__':
     homeLink = 'http://www.quanben.io/n/xiaoyuanquannenggaoshou/'
