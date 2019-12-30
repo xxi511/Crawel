@@ -8,10 +8,11 @@ from zssqCrawler import crawelHome as zssqCrawelHome, getArticleList as zssqGetA
 from czbookCrawler import crawelHome as caCrawelHome, getArticleList as czGetArticleList, crawelArticle as czCrawelArticle
 from quanbenCrawler import crawelHome as quanCrawelHome, getArticleList as quanGetArticleList, crawelArticle as quanCrawelArticle
 from dingdianCrawler import crawelHome as dingCrawelHome, getArticleList as dingGetArticleList, crawelArticle as dingCrawelArticle
+from uuCrawler import  crawelHome as uuCrawelHome, getArticleList as uuGetArticleList, crawelArticle as uuCrawelArticle
 
 class Crawler:
     def __init__(self):
-        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben', 'dingdian']
+        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben', 'dingdian', 'uu']
         self.site = ''
 
     def crawelHome(self, homeLink):
@@ -39,9 +40,12 @@ class Crawler:
         elif 'quanben.io' in homeLink:
             self.site = 'quanben'
             return quanCrawelHome(homeLink)
-        elif 'dingdian.org' in homeLink:
+        elif 'dingdianorg.com' in homeLink:
             self.site = 'dingdian'
-            return  dingCrawelHome(homeLink)
+            return dingCrawelHome(homeLink)
+        elif 'uukanshu' in homeLink:
+            self.site = 'uu'
+            return uuCrawelHome(homeLink)
         else:
             raise ValueError('Unsupport source website')
 
@@ -64,6 +68,8 @@ class Crawler:
             return quanGetArticleList(rootSoup, startChapterName)
         elif self.site == 'dingdian':
             return dingGetArticleList(rootSoup, startChapterName)
+        elif self.site == 'uu':
+            return uuGetArticleList(rootSoup, startChapterName)
 
     def crawelArticle(self, href):
         if self.site == 'sf':
@@ -84,3 +90,5 @@ class Crawler:
             return quanCrawelArticle(href)
         elif self.site == 'dingdian':
             return dingCrawelArticle(href)
+        elif self.site == 'uu':
+            return  uuCrawelArticle(href)

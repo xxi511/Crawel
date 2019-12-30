@@ -15,17 +15,11 @@ def getSoup(link):
 
 def crawelHome(homeLink):
     soup = getSoup(homeLink)
-    banner = 'https://www.dingdian.org' + soup.select_one('#fmimg img')['src']
-    title = s2tw(soup.select_one('#info h1').get_text())
-    info_ps = soup.select('#info p')
-    author = ''
+    banner = 'https:' + soup.select_one('dl.jieshao a img')['src']
+    title = s2tw(soup.select_one('dd.jieshao_content h1').get_text())[:-4]
+    author = s2tw(soup.select_one('dd.jieshao_content h2 a').get_text())
     state = '(連載中)'
-    for p in info_ps:
-        text = p.get_text()
-        if '者：' in text:
-            author = s2tw(text.split('：')[1].strip())
-
-    descText = s2tw(soup.select_one('#intro').get_text())
+    descText = s2tw(soup.select_one('dd.jieshao_content h3').get_text())
     desc = format(descText)
     return soup, banner, title, author, state, desc
 
@@ -33,7 +27,8 @@ def crawelHome(homeLink):
 def getArticleList(soup, startChapterName):
     shouldStart = False
     hrefs = []
-    for atag in soup.select('dd a'):
+    tags = soup.select('#chapterList li a')
+    for atag in reversed(tags):
         href = atag['href']
         if not shouldStart:
             if startChapterName in atag.get_text():
@@ -49,25 +44,34 @@ def getArticleList(soup, startChapterName):
 
 
 def crawelArticle(href):
-    link = 'https://www.dingdianorg.com' + href
+    link = 'https://tw.uukanshu.com/' + href
     soup = getSoup(link)
-    soup.select_one('#TXT div.bottem').decompose()
-    fonts = soup.select('#TXT font')
-    for font in fonts:
-        font.decompose()
-    scripts = soup.select('#TXT script')
-    for script in scripts:
-        script.decompose()
-    title = s2tw(soup.select_one('div.zhangjieming h1').get_text())
-    contentEle = soup.select_one('#TXT')
-    contents = contentEle.decode_contents().split('<br/><br/>')
+    ads = soup.select('div.ad_content')
+    for ad in ads:
+        ad.decompose()
+
+    html = soup.decode_contents().replace('<p "contnew"="">', '')
+    soup = BeautifulSoup(html, 'html.parser')
+    title = s2tw(soup.select_one('div.h1title h1').get_text())
+    contentEle = soup.select_one('#contentbox')
+    contents = contentEle.select('p')
+    if (len(contents) == 0):
+        contents = contentEle.decode_contents().split('<br/>')
+    else:
+        contents = [content.text for content in contents]
+
+    if '最新網址' in contents[0]:
+        contents.pop(0)
     content = s2tw('\n'.join(contents))
     newContent = format(title + '\n\r\n' + content)
     return newContent
 
 
 if __name__ == '__main__':
-    homeLink = 'https://www.dingdian.org/lyd63902/'
+    # href = '/b/84471/110588.html'
+    # a = crawelArticle(href)
+
+    homeLink = 'https://tw.uukanshu.com/b/84471/'
     soup, banner, title, author, state, desc = crawelHome(homeLink)
     hrefs = getArticleList(soup, '')
     for h in hrefs:

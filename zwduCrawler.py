@@ -51,12 +51,12 @@ def crawelArticle(href):
     soup = getSoup(link)
     title = s2tw(soup.select_one('div.bookname h1').get_text())
     contentEle = soup.select_one('#content')
-    contents = contentEle.decode_contents().split('<br/><br/>')
+    contents = contentEle.decode_contents().split('<br/>')
     content = s2tw('\n'.join(contents))
     newContent = format(title + '\n\r\n' + content)
     return newContent
 
 
 if __name__ == '__main__':
-    href = '/book/32772/14466353.html'
+    href = '/book/29007/10973416.html'
     crawelArticle(href)
