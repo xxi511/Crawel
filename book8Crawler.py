@@ -6,24 +6,19 @@ from format import format, s2tw
 
 def getSoup(link):
     resp = requests.get(link)
-    resp.encoding = "gbk"
+    resp.encoding = "Big5"
     soup = BeautifulSoup(resp.text, 'html.parser')
     return soup
 
 
 def crawelHome(homeLink):
     soup = getSoup(homeLink)
-    banner = soup.select_one('#fmimg img')['src']
-    title = s2tw(soup.select_one('#info h1').get_text())
-    info_ps = soup.select('#info p')
-    author = ''
+    banner = 'https://8book.com' + soup.select_one('td[align="center"]>img')['src']
+    title = s2tw(soup.select_one('td[height="80"]>font').get_text())
+    author = s2tw(soup.select_one('td[height="30"]>font').get_text())
     state = '(連載中)'
-    for p in info_ps:
-        text = p.get_text()
-        if '作\xa0\xa0\xa0\xa0者' in text:
-            author = s2tw(text.split('：')[1].strip())
 
-    descText = s2tw(soup.select_one('#intro p').get_text())
+    descText = s2tw(soup.select_one('td>p>span').get_text())
     desc = format(descText)
     return soup, banner, title, author, state, desc
 
@@ -31,7 +26,8 @@ def crawelHome(homeLink):
 def getArticleList(soup, startChapterName):
     shouldStart = False
     hrefs = []
-    for atag in soup.select('#list dl dd a'):
+    atags = soup.select('table.episodelist tr td a')
+    for atag in atags:
         href = atag['href']
         if not shouldStart:
             if startChapterName in atag.get_text():
@@ -47,10 +43,12 @@ def getArticleList(soup, startChapterName):
 
 
 def crawelArticle(href):
-    link = 'https://www.zwdu.com' + href
+    link = 'https://8book.com' + href
     soup = getSoup(link)
-    title = s2tw(soup.select_one('div.bookname h1').get_text())
-    contentEle = soup.select_one('#content')
+
+    title = s2tw(soup.select_one('table[width="95%"] td[height="80"]>font').get_text())
+    contentEle = soup.select_one('p.content')
+    [ad.decompose() for ad in contentEle.select('table')]
     contents = contentEle.decode_contents().split('<br/>')
     content = s2tw('\n'.join(contents))
     newContent = format(title + '\n\r\n' + content)
@@ -58,5 +56,10 @@ def crawelArticle(href):
 
 
 if __name__ == '__main__':
-    href = '/book/40503/17761682.html'
-    crawelArticle(href)
+    homeLink = 'https://8book.com/books/novelbook_106587.html'
+    soup, banner, title, author, state, desc = crawelHome(homeLink)
+    hrefs = getArticleList(soup, '')
+    for h in hrefs:
+        a = crawelArticle(h)
+        print(a)
+    print('a')

@@ -13,17 +13,12 @@ def getSoup(link):
 
 def crawelHome(homeLink):
     soup = getSoup(homeLink)
-    banner = soup.select_one('#fmimg img')['src']
-    title = s2tw(soup.select_one('#info h1').get_text())
-    info_ps = soup.select('#info p')
-    author = ''
+    banner = soup.select_one('div.info div.pic img')['src']
+    title = s2tw(soup.select_one('div.book div.btitle h1').get_text())
+    author = s2tw(soup.select_one('div.book div.btitle i').get_text().split('：')[1])
     state = '(連載中)'
-    for p in info_ps:
-        text = p.get_text()
-        if '作\xa0\xa0\xa0\xa0者' in text:
-            author = s2tw(text.split('：')[1].strip())
 
-    descText = s2tw(soup.select_one('#intro p').get_text())
+    descText = s2tw(soup.select_one('div.js p').get_text())
     desc = format(descText)
     return soup, banner, title, author, state, desc
 
@@ -31,7 +26,7 @@ def crawelHome(homeLink):
 def getArticleList(soup, startChapterName):
     shouldStart = False
     hrefs = []
-    for atag in soup.select('#list dl dd a'):
+    for atag in soup.select('dd #at td a'):
         href = atag['href']
         if not shouldStart:
             if startChapterName in atag.get_text():
@@ -47,10 +42,10 @@ def getArticleList(soup, startChapterName):
 
 
 def crawelArticle(href):
-    link = 'https://www.zwdu.com' + href
+    link = 'https://www.wutuxs.com' + href
     soup = getSoup(link)
-    title = s2tw(soup.select_one('div.bookname h1').get_text())
-    contentEle = soup.select_one('#content')
+    title = s2tw(soup.select_one('div.bdsub dl dd h1').get_text())
+    contentEle = soup.select_one('#contents')
     contents = contentEle.decode_contents().split('<br/>')
     content = s2tw('\n'.join(contents))
     newContent = format(title + '\n\r\n' + content)
@@ -58,5 +53,10 @@ def crawelArticle(href):
 
 
 if __name__ == '__main__':
-    href = '/book/40503/17761682.html'
-    crawelArticle(href)
+    homeLink = 'https://www.wutuxs.com/html/5/5597/'
+    soup, banner, title, author, state, desc = crawelHome(homeLink)
+    hrefs = getArticleList(soup, '')
+    for h in hrefs:
+        a = crawelArticle(h)
+        print(a)
+    print('a')

@@ -9,10 +9,12 @@ from czbookCrawler import crawelHome as caCrawelHome, getArticleList as czGetArt
 from quanbenCrawler import crawelHome as quanCrawelHome, getArticleList as quanGetArticleList, crawelArticle as quanCrawelArticle
 from dingdianCrawler import crawelHome as dingCrawelHome, getArticleList as dingGetArticleList, crawelArticle as dingCrawelArticle
 from uuCrawler import  crawelHome as uuCrawelHome, getArticleList as uuGetArticleList, crawelArticle as uuCrawelArticle
+from wutuxsCrawler import  crawelHome as wutuxCrawelHome, getArticleList as wutuxGetArticleList, crawelArticle as wutuxCrawelArticle
+from book8Crawler import  crawelHome as b8CrawelHome, getArticleList as b8GetArticleList, crawelArticle as b8CrawelArticle
 
 class Crawler:
     def __init__(self):
-        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben', 'dingdian', 'uu']
+        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben', 'dingdian', 'uu', 'wutuxs', '8book']
         self.site = ''
 
     def crawelHome(self, homeLink):
@@ -46,6 +48,12 @@ class Crawler:
         elif 'uukanshu' in homeLink:
             self.site = 'uu'
             return uuCrawelHome(homeLink)
+        elif 'wutuxs.com' in homeLink:
+            self.site = 'wutuxs'
+            return wutuxCrawelHome(homeLink)
+        elif '8book.com' in homeLink:
+            self.site = '8book'
+            return b8CrawelHome(homeLink)
         else:
             raise ValueError('Unsupport source website')
 
@@ -70,6 +78,10 @@ class Crawler:
             return dingGetArticleList(rootSoup, startChapterName)
         elif self.site == 'uu':
             return uuGetArticleList(rootSoup, startChapterName)
+        elif self.site == 'wutuxs':
+            return wutuxGetArticleList(rootSoup, startChapterName)
+        elif self.site == '8book':
+            return b8GetArticleList(rootSoup, startChapterName)
 
     def crawelArticle(self, href):
         if self.site == 'sf':
@@ -91,4 +103,8 @@ class Crawler:
         elif self.site == 'dingdian':
             return dingCrawelArticle(href)
         elif self.site == 'uu':
-            return  uuCrawelArticle(href)
+            return uuCrawelArticle(href)
+        elif self.site == 'wutuxs':
+            return wutuxCrawelArticle(href)
+        elif self.site == '8book':
+            return b8CrawelArticle(href)
