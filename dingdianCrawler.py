@@ -7,7 +7,7 @@ from format import format, s2tw
 def getSoup(link):
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'}
-    resp = requests.get(link, headers = headers)
+    resp = requests.get(link, headers = headers, verify=False)
     resp.encoding = "utf-8"
     soup = BeautifulSoup(resp.text, 'html.parser')
     return soup

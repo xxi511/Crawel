@@ -12,6 +12,7 @@
 本文來自.*
 <!--go-->
 <acronym>.*</acronym>
+<acronym>.*>
 <bdo>.*</bdo>
 <big>.*</big>
 <cite>.*</cite>
@@ -21,6 +22,7 @@
 <q>.*</q>
 <s>.*</s>
 <samp>.*</samp>
+<samp>.*>
 <strike>.*</strike>
 <tt>.*</tt>
 <u>.*</u>

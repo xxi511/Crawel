@@ -4,7 +4,7 @@ from format import format
 
 
 def getSoup(link):
-    resp = requests.get(link)
+    resp = requests.get(link, verify=False)
     soup = BeautifulSoup(resp.text, 'html.parser')
     return soup
 

@@ -5,7 +5,7 @@ from format import format, s2tw
 
 
 def getSoup(link):
-    resp = requests.get(link)
+    resp = requests.get(link, verify=False)
     resp.encoding = "gbk"
     soup = BeautifulSoup(resp.text, 'html.parser')
     return soup
