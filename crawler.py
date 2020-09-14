@@ -11,10 +11,12 @@ from dingdianCrawler import crawelHome as dingCrawelHome, getArticleList as ding
 from uuCrawler import  crawelHome as uuCrawelHome, getArticleList as uuGetArticleList, crawelArticle as uuCrawelArticle
 from wutuxsCrawler import  crawelHome as wutuxCrawelHome, getArticleList as wutuxGetArticleList, crawelArticle as wutuxCrawelArticle
 from book8Crawler import  crawelHome as b8CrawelHome, getArticleList as b8GetArticleList, crawelArticle as b8CrawelArticle
+from bimiduCrawler import crawelHome as bimCrawelHome, getArticleList as bimGetArticleList, crawelArticle as bimCrawelArticle
 
 class Crawler:
     def __init__(self):
-        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben', 'dingdian', 'uu', 'wutuxs', '8book']
+        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben',
+                        'dingdian', 'uu', 'wutuxs', '8book', 'bimidu']
         self.site = ''
 
     def crawelHome(self, homeLink):
@@ -54,6 +56,9 @@ class Crawler:
         elif '8book.com' in homeLink:
             self.site = '8book'
             return b8CrawelHome(homeLink)
+        elif 'bimidu.com' in homeLink:
+            self.site = 'bimidu'
+            return  bimCrawelHome(homeLink)
         else:
             raise ValueError('Unsupport source website')
 
@@ -82,6 +87,8 @@ class Crawler:
             return wutuxGetArticleList(rootSoup, startChapterName)
         elif self.site == '8book':
             return b8GetArticleList(rootSoup, startChapterName)
+        elif self.site == 'bimidu':
+            return bimGetArticleList(rootSoup, startChapterName)
 
     def crawelArticle(self, href):
         if self.site == 'sf':
@@ -108,3 +115,5 @@ class Crawler:
             return wutuxCrawelArticle(href)
         elif self.site == '8book':
             return b8CrawelArticle(href)
+        elif self.site == 'bimidu':
+            return bimCrawelArticle(href)
