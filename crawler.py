@@ -23,7 +23,7 @@ class Crawler:
         if 'book.sfacg.com' in homeLink:
             self.site = 'sf'
             return sfCrawelHome(homeLink)
-        elif 'zwdu.com' in homeLink:
+        elif 'zwdu.com' in homeLink or '81book.com' in homeLink or '81zw.com' in homeLink:
             self.site = 'zwdu'
             return zwCrawelHome(homeLink)
         elif 'hjwzw.com' in homeLink:
