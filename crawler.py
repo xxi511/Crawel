@@ -1,4 +1,5 @@
 # coding: utf-8
+import requests.packages.urllib3
 from zwduCrawler import crawelHome as zwCrawelHome, getArticleList as zwGetArticleList, crawelArticle as zwCrawelArticle
 from sfCrawler import crawelHome as sfCrawelHome, getArticleList as sfGetArticleList, crawelArticle as sfCrawelArticle
 from hjCrawler import crawelHome as hjCrawelHome, getArticleList as hjGetArticleList, crawelArticle as hjCrawelArticle
@@ -12,6 +13,8 @@ from uuCrawler import  crawelHome as uuCrawelHome, getArticleList as uuGetArticl
 from wutuxsCrawler import  crawelHome as wutuxCrawelHome, getArticleList as wutuxGetArticleList, crawelArticle as wutuxCrawelArticle
 from book8Crawler import  crawelHome as b8CrawelHome, getArticleList as b8GetArticleList, crawelArticle as b8CrawelArticle
 from bimiduCrawler import crawelHome as bimCrawelHome, getArticleList as bimGetArticleList, crawelArticle as bimCrawelArticle
+
+requests.packages.urllib3.disable_warnings()
 
 class Crawler:
     def __init__(self):

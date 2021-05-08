@@ -12,6 +12,7 @@ def getSoup(link):
 
 
 def crawelHome(homeLink):
+
     soup = getSoup(homeLink)
     banner = soup.select_one('#fmimg img')['src']
     title = s2tw(soup.select_one('#info h1').get_text())
@@ -47,7 +48,7 @@ def getArticleList(soup, startChapterName):
 
 
 def crawelArticle(href):
-    link = 'https://www.zwdu.com' + href
+    link = 'https://www.81book.com' + href
     soup = getSoup(link)
     title = s2tw(soup.select_one('div.bookname h1').get_text())
     contentEle = soup.select_one('#content')
@@ -58,5 +59,12 @@ def crawelArticle(href):
 
 
 if __name__ == '__main__':
-    href = '/book/40503/17761682.html'
-    crawelArticle(href)
+    homeLink = 'https://www.81book.com/book/33263/'
+    # https://tw.hjwzw.com/Book/33924
+    # https://tw.hjwzw.com/Book/Chapter/33924
+    soup, banner, title, author, state, desc = crawelHome(homeLink)
+    hrefs = getArticleList(soup, '')
+    for h in hrefs:
+        a = crawelArticle(h)
+        print(a)
+    print('a')
