@@ -3,6 +3,9 @@ import re
 import base64
 from bs4 import BeautifulSoup
 from format import format, s2tw
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import platform
 
 
 def getSoup(link):
@@ -47,46 +50,32 @@ def getArticleList(rootSoup, startChapterName):
         hrefs.append('https://hetushu.com' + href)
     return hrefs
 
+def getDriverPath():
+    sys = platform.system()
+    if 'Linux' in sys:
+        return './driver/linux_chromedriver'
+    elif 'Darwin' in sys:
+        return './driver/mac_chromedriver'
+    elif 'Windows' in sys:
+        return './driver/win_chromedriver.exe'
 
 def crawelArticle(href):
-    soup = getSoup(href)
-    h2s = soup.select('#content h2')
+    options = Options()
+    options.add_argument('headless')
+    driver = webdriver.Chrome(getDriverPath(), chrome_options=options)
+    driver.get(href)
+    h2s = driver.find_elements_by_css_selector('#content h2')
     h2Texts = []
     for h2 in h2s:
-        h2Texts.append(s2tw(h2.get_text()))
+        h2Texts.append(s2tw(h2.text))
     title = ' '.join(h2Texts)
-    contentTexts = rearrange(soup)
-    content = '\n\r'.join(contentTexts)
-    content = s2tw(content)
+    contents = driver.find_elements_by_css_selector('#content div')
+    contentTexts = []
+    for div in contents:
+        contentTexts.append(div.get_attribute('innerText'))
+    content = s2tw('\n\n'.join(contentTexts))
     newContent = format(title + '\n\r\n' + content)
     return newContent
-
-def rearrange(soup):
-    # soup = getSoup('href')
-    b64Data = soup.find_all('meta')[4]['content']
-    b64Decode = base64.b64decode(b64Data).decode('utf8')
-    indexRefs = re.split(r'[A-Z]+%', b64Decode)
-    indexRefs = list(map(int,indexRefs))
-    contentDiv = soup.select_one('#content')
-    star = 0
-    children = list(contentDiv.children)
-    for i, ele in enumerate(children):
-        if ele.name == 'h2':
-            star = i + 1
-        elif ele.name == 'div' and (not ele.has_attr('class') or ele['class'] is not 'chapter'):
-            break
-
-    real = [None] * len(indexRefs)
-    j = 0
-    for i, ele in enumerate(indexRefs):
-        if indexRefs[i] < 5:
-            real[indexRefs[i]] = children[i + star].decode_contents()
-            j += 1
-        else:
-            real[indexRefs[i] - j] = children[i + star].decode_contents()
-
-    return real
-
 
 if __name__ == '__main__':
     homeLink = 'https://hetushu.com/book/91/index.html'

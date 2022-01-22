@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 import platform
+import time
 
 
 def getTid(url):
@@ -43,7 +44,9 @@ def openForum(forumDomain, account, password):
 
 def login(driver, account, password):
     driver.find_element_by_css_selector('#ls_username').send_keys(account)
+    time.sleep(1)
     driver.find_element_by_css_selector('#ls_password').send_keys(password)
+    time.sleep(1)
     driver.find_element_by_css_selector('#lsform td.fastlg_l button').click()
     try:
         WebDriverWait(driver, 10).until(
@@ -98,6 +101,7 @@ def setSubCategory(driver, subCategoryIdx):
         print('a')
 
 def checkPostState(driver):
+    time.sleep(1)
     try:
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.ID, "postlist"))
@@ -119,6 +123,7 @@ def postArticle(driver, postLink, content):
         areaEle = driver.find_element_by_css_selector('#e_textarea')
         driver.execute_script(
             "arguments[0].value = arguments[1]", areaEle, content)
+        time.sleep(1)
         driver.find_element_by_css_selector('#postsubmit').click()
         return checkPostState(driver)
     except:
