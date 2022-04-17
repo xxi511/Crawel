@@ -47,7 +47,7 @@ class Crawler:
         elif 'quanben.io' in homeLink:
             self.site = 'quanben'
             return quanCrawelHome(homeLink)
-        elif 'dingdianorg.com' in homeLink:
+        elif '230book.net/' in homeLink:
             self.site = 'dingdian'
             return dingCrawelHome(homeLink)
         elif 'uukanshu' in homeLink:
