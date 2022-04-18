@@ -81,7 +81,8 @@ class PosterUI(Frame):
         urlStr = self.urlEntry.get()
         support = ['zwdu.com', 'book.sfacg.com', 'hjwzw.com', 'wenku8.net',
                    'hetushu.com', 'hetubook.com', 'zssq.cc', 'czbooks.net', 'quanben.io', 'dingdianorg.com',
-                   'uukanshu', 'wutuxs.com', '8book.com', 'bimidu.com', 'www.81book.com', 'www.81zw.com']
+                   'uukanshu', 'wutuxs.com', '8book.com', 'bimidu.com', 'www.81book.com', 'www.81zw.com',
+                   '230book.net']
         for s in support:
             if s in urlStr:
                 return True
