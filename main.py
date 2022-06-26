@@ -4,6 +4,9 @@ from web import openForum, postCover, postArticle,  getTid
 from tkinter import messagebox, Tk, E
 from tkinter.ttk import Label, Button, Entry, Frame
 
+import configruation as config
+from urllib.parse import urlparse
+
 
 class PosterUI(Frame):
     def __init__(self, parent):
@@ -172,9 +175,74 @@ class PosterUI(Frame):
         messagebox.showinfo('通知', '自動刊登暫停，更新完設定後請繼續')
 
 
+def start():
+    if verify_configuration() == False:
+        return 
+    start_crawling()
+
+def verify_configuration() -> bool:
+    if check_account() == False:
+        return False
+    if check_source() == False:
+        return False
+    if check_forum() == False:
+        return False
+    return True
+
+def check_account() -> bool:
+    account = config.account
+    password = config.password
+    if isinstance(account, str) == False or isinstance(password, str) == False:
+        print('錯誤！ 帳號密碼是字串，範例: account = "test"')
+        return False
+    if len(account) == 0 or len(password) == 0:
+        print('錯誤！ 請輸入帳號密碼')
+        return False
+    return True
+
+def check_source() -> bool:
+    novel_source = config.novel_source
+    start_capter = config.start_capter
+    if isinstance(novel_source, str) == False or isinstance(start_capter, str) == False:
+        print('錯誤！ novel_source/ start_capter是字串，範例: start_capter = "https://abc.com"')
+        return False
+
+    parsed_source = urlparse(novel_source)
+    parsed_chapter = urlparse(start_capter)
+    support = config.support
+    if parsed_source.hostname in support and parsed_chapter.hostname in support:
+        return True
+    print('錯誤！ 不支援的來源網址')
+    return False
+
+def check_forum() -> bool:
+    fid = config.fid
+    if isinstance(fid, int) == False:
+        print('錯誤！ Fid 要是數字，範例 fid = 3')
+        return False
+
+    sub_category = config.sub_category
+    if isinstance(sub_category, int) == False:
+        print('錯誤！ sub_category 要是數字，範例 sub_category = 3')
+        return False
+    
+    article_link = config.article_link
+    if isinstance(article_link, str) == False:
+        print('錯誤！ article_link 要是網址，範例 article_link = "https://abc.com"')
+        return False
+    parsed_article = urlparse(article_link)
+    if parsed_article.hostname != 'woodo.club':
+        print('錯誤！ article_link 不是 woodo 的')
+        return False
+    return True
+
+def start_crawling():
+    print('a')
+
 if __name__ == '__main__':
-    root = Tk()
-    root.resizable(0, 0)
-    root.geometry("500x250")  # wxh
-    app = PosterUI(root)
-    app.mainloop()
+    start()
+    # root = Tk()
+    # root.resizable(0, 0)
+    # root.geometry("500x250")  # wxh
+    # app = PosterUI(root)
+    # app.mainloop()
