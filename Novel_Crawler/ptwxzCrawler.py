@@ -1,7 +1,8 @@
+import driver
 import requests
-import re
 from bs4 import BeautifulSoup
 from format import format, s2tw
+
 
 
 def getSoup(link):
@@ -32,7 +33,7 @@ def crawelHome(homeLink):
     author = s2tw(authorDiv.text.split('：')[1])
     state = '(連載中)'
 
-    descDiv = soup.select_one('div[style="float:left;width:390px;"]')
+    descDiv = soup.select_one('div[style="float:left;width:460px;"]')
     [span.decompose() for span in descDiv.select('span')]
     [link.decompose() for link in descDiv.select('a')]
     [br.decompose() for br in descDiv.select('br')]
@@ -42,7 +43,7 @@ def crawelHome(homeLink):
 
 def getArticleList(rootSoup, startChapterName):
     selector = 'table[width="100%"][border="0"][cellpadding="3"] td[width="20%"] a'
-    link = rootSoup.select_one(selector)['href']
+    link = "https://www.ptwxz.com" + rootSoup.select_one(selector)['href']
     soup = getSoup(link)
     shouldStart = False
     hrefs = []
@@ -63,19 +64,18 @@ def getArticleList(rootSoup, startChapterName):
 
 
 def crawelArticle(href):
-    link = href
-    soup = getSoup(link)
-    selector = '#content'
-    contentDiv = soup.select_one(selector)
-    bookName = soup.select_one('h1').get_text()
-    content = contentDiv.select_one('#content h1').get_text()
+    chrome = driver.get_selenium(href)
+    chrome.execute_script("return document.querySelector('div.toplink').remove()")
+    contentDiv = chrome.find_element_by_css_selector("#content")
+    content = contentDiv.text
+    chrome.close()
 
     content = s2tw(content)
     newContent = format(content)
     return newContent
 
 if __name__ == '__main__':
-    homeLink = 'https://www.ptwxz.com/bookinfo/6/6326.html'
+    homeLink = 'https://www.ptwxz.com/html/10/10135/'
     # https://tw.hjwzw.com/Book/33924
     # https://tw.hjwzw.com/Book/Chapter/33924
     soup, banner, title, author, state, desc = crawelHome(homeLink)

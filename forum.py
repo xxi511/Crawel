@@ -5,33 +5,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 import time
-
-import zipfile
-import wget
-import platform
-import os
-import subprocess
+import driver as driver_helper
 
 class Forum:
     def __init__(self) -> None:
         self.driver = None
         pass
-
-    def driver_name(self) -> str:
-        sys = platform.system()
-        return 'chromedriver.exe' if 'Windows' in sys else 'chromedriver'
-
-    def driver_zip_name(self) -> str:
-        sys = platform.system()
-        if 'Linux' in sys:
-            return 'chromedriver_linux64.zip'
-        elif 'Darwin' in sys:
-            if 'x86_64' in platform.platform():
-                return 'chromedriver_mac64.zip'
-            else:
-                return 'chromedriver_mac64_m1.zip'
-        elif 'Windows' in sys:
-            return 'chromedriver_win32.zip'
 
     def getTid(self, url: str) -> str:
         pattern = re.compile(r'tid=[0-9]+')
@@ -41,28 +20,19 @@ class Forum:
     def prepare_driver(self):
         options = Options()
         options.add_argument('--no-sandbox')
-        driver = webdriver.Chrome('./' + self.driver_name(), chrome_options=options)
+        driver = webdriver.Chrome('./' + driver_helper.driver_name(), chrome_options=options)
         chrome_version = driver.capabilities['browserVersion']
         driver_version = driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
         if chrome_version.split('.')[0] != driver_version.split('.')[0]: 
             print('提示！ driver 版本錯誤，下載新版本中，請稍候')
             driver.quit()
-            self.download_driver(chrome_version)
+            driver_helper.download_driver(chrome_version)
+            self.prepare_driver()
+            return
         
         driver.set_window_size(1024, 960)
         driver.get("https://woodo.club/forum.php")
         self.driver = driver
-
-    def download_driver(self, version: str):
-        link = 'https://chromedriver.storage.googleapis.com/{}/{}'.format(version, self.driver_zip_name())
-        file_name = wget.download(link)
-        with zipfile.ZipFile(file_name, 'r') as zip_ref:
-            file_path = os.getcwd() + '/' + self.driver_name()
-            os.remove(file_path)
-            zip_ref.extractall('./')
-            subprocess.call(['chmod', 'u+x', file_path])
-            os.remove(os.getcwd() + '/' + self.driver_zip_name())
-            self.prepare_driver()
     
     def login(self, account: str, password: str):
         driver = self.driver

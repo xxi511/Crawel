@@ -3,6 +3,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from format import format, s2tw
+import helpers
 
 
 def getSoup(link):
@@ -20,7 +21,7 @@ def checkHomeLink(homeLink):
 
 def crawelHome(homeLink):
     _homeLink = checkHomeLink(homeLink)
-    soup = getSoup(_homeLink)
+    soup = helpers.getSoup(_homeLink, helpers.Encoding.utf8)
     banner = soup.select_one('div.list2 img')['src']
     title = s2tw(soup.select_one('div.list2 span[itemprop="name"]').get_text())
     info_ps = soup.select('#info p')
@@ -52,7 +53,7 @@ def getArticleList(soup, startChapterName):
 
 def crawelArticle(href):
     link = 'http://www.quanben.io' + href
-    soup = getSoup(link)
+    soup = helpers.getSoup(link, helpers.Encoding.utf8)
     # loadMore(soup)
     title = s2tw(soup.select_one('h1.headline').get_text())
     contentTexts = []

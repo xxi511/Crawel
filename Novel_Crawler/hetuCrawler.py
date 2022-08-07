@@ -1,23 +1,11 @@
-import requests
-import re
-import base64
-from bs4 import BeautifulSoup
+import driver
+from selenium.webdriver.common.by import By
 from format import format, s2tw
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import platform
-
-
-def getSoup(link):
-    headers = {'user-agent': 'Mozilla/5.0 (Macintosh Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36'}
-    resp = requests.get(link, headers=headers, verify=False)
-    resp.encoding = 'utf-8'
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    return soup
+import helpers
 
 
 def crawelHome(homeLink):
-    soup = getSoup(homeLink)
+    soup = helpers.getSoup(homeLink, helpers.Encoding.utf8)
     infoDiv = soup.select_one('div.book_info.finish')
     banner = 'https:' + infoDiv.select_one('img')['src']
 
@@ -50,32 +38,21 @@ def getArticleList(rootSoup, startChapterName):
         hrefs.append('https://hetushu.com' + href)
     return hrefs
 
-def getDriverPath():
-    sys = platform.system()
-    if 'Linux' in sys:
-        return './driver/linux_chromedriver'
-    elif 'Darwin' in sys:
-        return './driver/mac_chromedriver'
-    elif 'Windows' in sys:
-        return './driver/win_chromedriver.exe'
-
 def crawelArticle(href):
-    options = Options()
-    options.add_argument('headless')
-    driver = webdriver.Chrome(getDriverPath(), chrome_options=options)
-    driver.get(href)
-    h2s = driver.find_elements_by_css_selector('#content h2')
+    chrome = driver.get_selenium(href)
+    h2s = chrome.find_elements(By.CSS_SELECTOR, '#content h2')
+    
     h2Texts = []
     for h2 in h2s:
         h2Texts.append(s2tw(h2.text))
     title = ' '.join(h2Texts)
-    contents = driver.find_elements_by_css_selector('#content div')
-    driver.quit()
+    contents = chrome.find_elements(By.CSS_SELECTOR, '#content div')
     contentTexts = []
     for div in contents:
         contentTexts.append(div.get_attribute('innerText'))
     content = s2tw('\n\n'.join(contentTexts))
     newContent = format(title + '\n\r\n' + content)
+    chrome.close()
     return newContent
 
 if __name__ == '__main__':

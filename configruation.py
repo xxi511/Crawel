@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
 import json
+from Novel_Crawler.helpers import Support
 
 class Config:
     def __init__(self) -> None:
@@ -14,10 +15,9 @@ class Config:
             self.article_link = dict['article_link']
 
         self.support = [
-                'zwdu.com', 'book.sfacg.com', 'tw.hjwzw.com', 'hjwzw.com', 'wenku8.net',
-                'hetushu.com', 'hetubook.com', 'zssq.cc', 'czbooks.net', 'quanben.io', 'dingdianorg.com',
-                'uukanshu', 'wutuxs.com', '8book.com', 'bimidu.com', 'www.81book.com', 'www.81zw.com',
-                '230book.net'
+                Support.bimidu, Support.book8, Support.czbook, Support.hetu, Support.hj,
+                Support.pt, Support.quanben, Support.sf, Support.uu, Support.wenku, Support.wutuxs, 
+                Support.zwdu
             ]
 
     def verify_configuration(self) -> bool:
@@ -49,9 +49,9 @@ class Config:
 
         parsed_source = urlparse(novel_source)
         parsed_chapter = urlparse(start_capter)
-        support = self.support
-        if parsed_source.hostname in support and parsed_chapter.hostname in support:
-            return True
+        for site in self.support:
+            if site.value in parsed_source.hostname and site.value in parsed_chapter:
+                return True
         print('錯誤！ 不支援的來源網址')
         return False
 

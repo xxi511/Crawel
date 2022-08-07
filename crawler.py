@@ -1,122 +1,79 @@
 # coding: utf-8
+from turtle import home
 import requests.packages.urllib3
-from zwduCrawler import crawelHome as zwCrawelHome, getArticleList as zwGetArticleList, crawelArticle as zwCrawelArticle
-from sfCrawler import crawelHome as sfCrawelHome, getArticleList as sfGetArticleList, crawelArticle as sfCrawelArticle
-from hjCrawler import crawelHome as hjCrawelHome, getArticleList as hjGetArticleList, crawelArticle as hjCrawelArticle
-from wenkuCrawler import crawelHome as wenCrawelHome, getArticleList as wenGetArticleList, crawelArticle as wenCrawelArticle
-from hetuCrawler import crawelHome as hetuCrawelHome, getArticleList as hetuGetArticleList, crawelArticle as hetuCrawelArticle
-from zssqCrawler import crawelHome as zssqCrawelHome, getArticleList as zssqGetArticleList, crawelArticle as zssqCrawelArticle
-from czbookCrawler import crawelHome as caCrawelHome, getArticleList as czGetArticleList, crawelArticle as czCrawelArticle
-from quanbenCrawler import crawelHome as quanCrawelHome, getArticleList as quanGetArticleList, crawelArticle as quanCrawelArticle
-from dingdianCrawler import crawelHome as dingCrawelHome, getArticleList as dingGetArticleList, crawelArticle as dingCrawelArticle
-from uuCrawler import  crawelHome as uuCrawelHome, getArticleList as uuGetArticleList, crawelArticle as uuCrawelArticle
-from wutuxsCrawler import  crawelHome as wutuxCrawelHome, getArticleList as wutuxGetArticleList, crawelArticle as wutuxCrawelArticle
-from book8Crawler import  crawelHome as b8CrawelHome, getArticleList as b8GetArticleList, crawelArticle as b8CrawelArticle
-from bimiduCrawler import crawelHome as bimCrawelHome, getArticleList as bimGetArticleList, crawelArticle as bimCrawelArticle
+from Novel_Crawler.helpers import Support
+from Novel_Crawler.book8Crawler import  crawelHome as b8CrawelHome, getArticleList as b8GetArticleList, crawelArticle as b8CrawelArticle
+from Novel_Crawler.bimiduCrawler import crawelHome as bimCrawelHome, getArticleList as bimGetArticleList, crawelArticle as bimCrawelArticle
+from Novel_Crawler.czbookCrawler import crawelHome as czCrawelHome, getArticleList as czGetArticleList, crawelArticle as czCrawelArticle
+from Novel_Crawler.hetuCrawler import crawelHome as hetuCrawelHome, getArticleList as hetuGetArticleList, crawelArticle as hetuCrawelArticle
+from Novel_Crawler.hjCrawler import crawelHome as hjCrawelHome, getArticleList as hjGetArticleList, crawelArticle as hjCrawelArticle
+from Novel_Crawler.ptwxzCrawler import crawelHome as ptCrawelHome, getArticleList as ptGetArticleList, crawelArticle as ptCrawelArticle
+from Novel_Crawler.quanbenCrawler import crawelHome as quanCrawelHome, getArticleList as quanGetArticleList, crawelArticle as quanCrawelArticle
+from Novel_Crawler.sfCrawler import crawelHome as sfCrawelHome, getArticleList as sfGetArticleList, crawelArticle as sfCrawelArticle
+from Novel_Crawler.uuCrawler import  crawelHome as uuCrawelHome, getArticleList as uuGetArticleList, crawelArticle as uuCrawelArticle
+from Novel_Crawler.wenkuCrawler import crawelHome as wenCrawelHome, getArticleList as wenGetArticleList, crawelArticle as wenCrawelArticle
+from Novel_Crawler.wutuxsCrawler import  crawelHome as wutuxCrawelHome, getArticleList as wutuxGetArticleList, crawelArticle as wutuxCrawelArticle
+from Novel_Crawler.zwduCrawler import crawelHome as zwCrawelHome, getArticleList as zwGetArticleList, crawelArticle as zwCrawelArticle
 
 requests.packages.urllib3.disable_warnings()
 
 class Crawler:
     def __init__(self):
-        self.support = ['sf', 'zwdu', 'hj', 'wenku', 'hetu', 'zssq', 'czbook', 'quanben',
-                        'dingdian', 'uu', 'wutuxs', '8book', 'bimidu']
-        self.site = ''
+        self.site = Support.unknown
 
     def crawelHome(self, homeLink):
-        if 'book.sfacg.com' in homeLink:
-            self.site = 'sf'
-            return sfCrawelHome(homeLink)
-        elif 'zwdu.com' in homeLink or '81book.com' in homeLink or '81zw.com' in homeLink:
-            self.site = 'zwdu'
-            return zwCrawelHome(homeLink)
-        elif 'hjwzw.com' in homeLink:
-            self.site = 'hj'
-            return hjCrawelHome(homeLink)
-        elif 'wenku8.net' in homeLink:
-            self.site = 'wenku'
-            return wenCrawelHome(homeLink)
-        elif 'hetushu.com' in homeLink or 'hetubook.com' in homeLink:
-            self.site = 'hetu'
-            return hetuCrawelHome(homeLink)
-        elif 'zssq.cc' in homeLink:
-            self.site = 'zssq'
-            return zssqCrawelHome(homeLink)
-        elif 'czbooks.net' in homeLink:
-            self.site = 'czbook'
-            return caCrawelHome(homeLink)
-        elif 'quanben.io' in homeLink:
-            self.site = 'quanben'
-            return quanCrawelHome(homeLink)
-        elif '230book.net/' in homeLink:
-            self.site = 'dingdian'
-            return dingCrawelHome(homeLink)
-        elif 'uukanshu' in homeLink:
-            self.site = 'uu'
-            return uuCrawelHome(homeLink)
-        elif 'wutuxs.com' in homeLink:
-            self.site = 'wutuxs'
-            return wutuxCrawelHome(homeLink)
-        elif '8book.com' in homeLink:
-            self.site = '8book'
-            return b8CrawelHome(homeLink)
-        elif 'bimidu.com' in homeLink:
-            self.site = 'bimidu'
-            return  bimCrawelHome(homeLink)
-        else:
+        self.site = Support(homeLink)
+        functions = {
+            Support.bimidu: bimCrawelHome,
+            Support.book8: b8CrawelHome,
+            Support.czbook: czCrawelHome, 
+            Support.hetu: hetuCrawelHome, 
+            Support.hj: hjCrawelHome,
+            Support.pt: ptCrawelHome, 
+            Support.quanben: quanCrawelHome, 
+            Support.sf: sfCrawelHome, 
+            Support.uu: uuCrawelHome, 
+            Support.wenku: wenCrawelHome, 
+            Support.wutuxs: wutuxCrawelHome, 
+            Support.zwdu: zwCrawelHome,
+        }
+        if self.site == Support.unknown:
             raise ValueError('Unsupport source website')
+        print("Get novle information")
+        return functions[self.site](homeLink)
 
     def getArticleList(self, rootSoup, startChapterName):
-        if self.site == 'sf':
-            return sfGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'zwdu':
-            return  zwGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'hj':
-            return hjGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'wenku':
-            return wenGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'hetu':
-            return hetuGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'zssq':
-            return zssqGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'czbook':
-            return czGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'quanben':
-            return quanGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'dingdian':
-            return dingGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'uu':
-            return uuGetArticleList(rootSoup, startChapterName)
-        elif self.site == 'wutuxs':
-            return wutuxGetArticleList(rootSoup, startChapterName)
-        elif self.site == '8book':
-            return b8GetArticleList(rootSoup, startChapterName)
-        elif self.site == 'bimidu':
-            return bimGetArticleList(rootSoup, startChapterName)
+        functions = {
+            Support.bimidu: bimGetArticleList,
+            Support.book8: b8GetArticleList,
+            Support.czbook: czGetArticleList, 
+            Support.hetu: hetuGetArticleList, 
+            Support.hj: hjGetArticleList,
+            Support.pt: ptGetArticleList, 
+            Support.quanben: quanGetArticleList, 
+            Support.sf: sfGetArticleList, 
+            Support.uu: uuGetArticleList, 
+            Support.wenku: wenGetArticleList, 
+            Support.wutuxs: wutuxGetArticleList, 
+            Support.zwdu: zwGetArticleList,
+        }
+        print("Get novel chapter list")
+        return functions[self.site](rootSoup, startChapterName)
 
     def crawelArticle(self, href):
-        if self.site == 'sf':
-            return sfCrawelArticle(href)
-        elif self.site == 'zwdu':
-            return zwCrawelArticle(href)
-        elif self.site == 'hj':
-            return hjCrawelArticle(href)
-        elif self.site == 'wenku':
-            return wenCrawelArticle(href)
-        elif self.site == 'hetu':
-            return hetuCrawelArticle(href)
-        elif self.site == 'zssq':
-            return zssqCrawelArticle(href)
-        elif self.site == 'czbook':
-            return czCrawelArticle(href)
-        elif self.site == 'quanben':
-            return quanCrawelArticle(href)
-        elif self.site == 'dingdian':
-            return dingCrawelArticle(href)
-        elif self.site == 'uu':
-            return uuCrawelArticle(href)
-        elif self.site == 'wutuxs':
-            return wutuxCrawelArticle(href)
-        elif self.site == '8book':
-            return b8CrawelArticle(href)
-        elif self.site == 'bimidu':
-            return bimCrawelArticle(href)
+        functions = {
+            Support.bimidu: bimCrawelArticle,
+            Support.book8: b8CrawelArticle,
+            Support.czbook: czCrawelArticle, 
+            Support.hetu: hetuCrawelArticle, 
+            Support.hj: hjCrawelArticle,
+            Support.pt: ptCrawelArticle, 
+            Support.quanben: quanCrawelArticle, 
+            Support.sf: sfCrawelArticle, 
+            Support.uu: uuCrawelArticle, 
+            Support.wenku: wenCrawelArticle, 
+            Support.wutuxs: wutuxCrawelArticle, 
+            Support.zwdu: zwCrawelArticle,
+        }
+        print("Get novel content: {}".format(href))
+        return functions[self.site](href)
