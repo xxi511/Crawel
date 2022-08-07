@@ -70,6 +70,7 @@ def crawelArticle(href):
         h2Texts.append(s2tw(h2.text))
     title = ' '.join(h2Texts)
     contents = driver.find_elements_by_css_selector('#content div')
+    driver.quit()
     contentTexts = []
     for div in contents:
         contentTexts.append(div.get_attribute('innerText'))

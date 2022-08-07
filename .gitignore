@@ -128,3 +128,4 @@ dmypy.json
 
 .vscode
 driver
+config.json
