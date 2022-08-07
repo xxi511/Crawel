@@ -10,8 +10,10 @@ class Encoding(Enum):
 
 class Support(Enum):
     unknown = 'unknown'
+    b520 = 'www.b520.cc'
     bimidu = 'www.bimidu.com'
     book8 = '8book.com'
+    cnuu = 'cn.uukanshu.cc'
     czbook = 'czbooks.net'
     hetu = 'hetushu.com'
     hj = 'tw.hjwzw.com'
@@ -27,15 +29,19 @@ class Support(Enum):
     def _missing_(cls, value):
         if isinstance(value, str) == False:
             return Support.unknown
-        support = [
-                Support.bimidu, Support.book8, Support.czbook, Support.hetu, Support.hj,
-                Support.pt, Support.quanben, Support.sf, Support.uu, Support.wenku, Support.wutuxs, 
-                Support.zwdu
-            ]
-        for host in support:
+
+        for host in supports:
             if host.value in value:
                 return host
         return Support.unknown
+
+supports = [
+                Support.b520, Support.bimidu, Support.book8, 
+                Support.cnuu, Support.czbook, 
+                Support.hetu, Support.hj,
+                Support.pt, Support.quanben, Support.sf, Support.uu, Support.wenku, Support.wutuxs, 
+                Support.zwdu
+            ]
 
 def getSoup(link: str, encoding: Encoding) -> BeautifulSoup:
     headers = {

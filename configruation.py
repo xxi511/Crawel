@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 import json
-from Novel_Crawler.helpers import Support
+import Novel_Crawler.helpers as helpers
 
 class Config:
     def __init__(self) -> None:
@@ -14,11 +14,7 @@ class Config:
             self.sub_category = dict['sub_category']
             self.article_link = dict['article_link']
 
-        self.support = [
-                Support.bimidu, Support.book8, Support.czbook, Support.hetu, Support.hj,
-                Support.pt, Support.quanben, Support.sf, Support.uu, Support.wenku, Support.wutuxs, 
-                Support.zwdu
-            ]
+        self.support = helpers.supports
 
     def verify_configuration(self) -> bool:
         if self.check_account_config() == False:

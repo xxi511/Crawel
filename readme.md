@@ -1,5 +1,21 @@
 # 爬蟲
 
+## How to use 
+Open `config.json` 
+fill in all of data
+```
+"account": 帳號
+"password": 密碼
+"novel_source": 小說首頁
+"start_capter": 小說起始章節
+"fid": 小說區塊 fid
+"sub_category": 發文分類，新書才需要
+"article_link": 論壇小說網址
+```
+
+## support sites 
+Check `Novel_Crawler/helpers.py`
+
 ## pyinstaller
 
 ```
@@ -7,11 +23,6 @@ $ pyinstaller -F -n AutoPost -w main.py
 ```
 
 將 `config/`, `dictionary/`, `driver/`, `data.txt` , `regex.txt`複製到 `dist/` 中
-
-## Chrome driver
-
-目前 `mac`, `win` 是使用 `chrome 77`
-`linux` 是 `chrome 74`
 
 ## 3-rd
 
