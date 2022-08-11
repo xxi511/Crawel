@@ -17,7 +17,16 @@ class Forum:
         tid = pattern.search(url).group()
         return tid[4:]
 
-    def prepare_driver(self):
+    def prepare_driver(self) -> bool:
+        if driver_helper.is_driver_exist() == False:
+            path = driver_helper.driver_path()
+            print('提示！ chrome driver 不存在下載中，請稍後'.format(path))
+            chrome_version = driver_helper.get_chrome_version()
+            if chrome_version == 'unknown':
+                return False
+            driver_helper.download_driver(chrome_version)
+            return self.prepare_driver()
+
         options = Options()
         options.add_argument('--no-sandbox')
         driver = webdriver.Chrome('./' + driver_helper.driver_name(), chrome_options=options)
@@ -27,12 +36,12 @@ class Forum:
             print('提示！ driver 版本錯誤，下載新版本中，請稍候')
             driver.quit()
             driver_helper.download_driver(chrome_version)
-            self.prepare_driver()
-            return
+            return self.prepare_driver()
         
         driver.set_window_size(1024, 960)
         driver.get("https://woodo.club/forum.php")
         self.driver = driver
+        return True
     
     def login(self, account: str, password: str):
         driver = self.driver

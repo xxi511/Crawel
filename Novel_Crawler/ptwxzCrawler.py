@@ -43,7 +43,8 @@ def crawelHome(homeLink):
 
 def getArticleList(rootSoup, startChapterName):
     selector = 'table[width="100%"][border="0"][cellpadding="3"] td[width="20%"] a'
-    link = "https://www.ptwxz.com" + rootSoup.select_one(selector)['href']
+    href = rootSoup.select_one(selector)['href']
+    link = href if href.startswith('http') else "https://www.ptwxz.com" + href
     soup = getSoup(link)
     shouldStart = False
     hrefs = []
@@ -66,16 +67,17 @@ def getArticleList(rootSoup, startChapterName):
 def crawelArticle(href):
     chrome = driver.get_selenium(href)
     chrome.execute_script("return document.querySelector('div.toplink').remove()")
+    chrome.execute_script("return document.querySelector('div.share').remove()")
     contentDiv = chrome.find_element_by_css_selector("#content")
     content = contentDiv.text
-    chrome.close()
+    chrome.quit()
 
     content = s2tw(content)
     newContent = format(content)
     return newContent
 
 if __name__ == '__main__':
-    homeLink = 'https://www.ptwxz.com/html/10/10135/'
+    homeLink = 'https://www.ptwxz.com/bookinfo/9/9207.html'
     # https://tw.hjwzw.com/Book/33924
     # https://tw.hjwzw.com/Book/Chapter/33924
     soup, banner, title, author, state, desc = crawelHome(homeLink)

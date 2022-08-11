@@ -1,4 +1,5 @@
 # coding: utf-8
+import os
 import re
 from opencc import OpenCC
 
@@ -55,12 +56,19 @@ def replacement(content):
         newContent = re.sub(r'{}'.format(olds), news, newContent)
     return newContent
 
+def get_parent_folder() -> str:
+    parent_dir = os.getcwd()
+    if parent_dir.endswith('Novel_Crawler'):
+        parent_dir = os.path.dirname(parent_dir)
+    return parent_dir
 
 def loadData():
     if len(wordDic) > 0:
         return wordDic
 
-    with open('data.txt', 'r', encoding='utf-8-sig') as f:
+    parent_dir = get_parent_folder()
+    path = os.path.join(parent_dir, 'data.txt')
+    with open(path, 'r', encoding='utf-8-sig') as f:
         for line in f:
             old, new = line[:-1].split('#####')
             d = {'olds': old, 'news': new}
@@ -71,7 +79,9 @@ def loadRegexData():
     if len(regexArr) > 0:
         return regexArr
 
-    with open('regex.txt', 'r', encoding='utf-8-sig') as f:
+    parent_dir = get_parent_folder()
+    path = os.path.join(parent_dir, 'regex.txt')
+    with open(path, 'r', encoding='utf-8-sig') as f:
         for line in f:
             txt = line.replace('\n', '')
             txt = txt.replace('/', '\/')

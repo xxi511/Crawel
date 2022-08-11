@@ -4,7 +4,7 @@ import Novel_Crawler.helpers as helpers
 
 class Config:
     def __init__(self) -> None:
-        with open('./config.json', 'r') as f:
+        with open('./config.json', 'r', encoding="utf-8") as f:
             dict = json.load(f)
             self.account = dict['account']
             self.password = dict['password']

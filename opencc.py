@@ -104,6 +104,12 @@ class OpenCC:
                     "".join(tree.inorder()), c_dict, True))
         return "".join(tree.inorder())
 
+    def get_parent_folder(self) -> str:
+        parent_dir = os.getcwd()
+        if parent_dir.endswith('Novel_Crawler'):
+            parent_dir = os.path.dirname(parent_dir)
+        return parent_dir
+
     def _init_dict(self):
         """
         initialize the dict with chosen conversion
@@ -114,7 +120,8 @@ class OpenCC:
 
         self._dict_chain = []
         config = self.conversion + '.json'
-        config_file = './config/{}'.format( config)
+        parent_dir = self.get_parent_folder()
+        config_file = os.path.join(parent_dir, 'config', config)
         with open(config_file) as f:
             setting_json = json.load(f)
 
@@ -163,7 +170,7 @@ class OpenCC:
             dict_chain.append(chain)
         elif dict_dict.get('type') == 'txt':
             filename = dict_dict.get('file')
-            dict_file = './dictionary/{}'.format( filename)
+            dict_file = os.path.join(self.get_parent_folder(), 'dictionary', filename)
             dict_chain.append(dict_file)
 
     def set_conversion(self, conversion):

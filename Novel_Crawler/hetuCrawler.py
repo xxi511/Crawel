@@ -52,7 +52,7 @@ def crawelArticle(href):
         contentTexts.append(div.get_attribute('innerText'))
     content = s2tw('\n\n'.join(contentTexts))
     newContent = format(title + '\n\r\n' + content)
-    chrome.close()
+    chrome.quit()
     return newContent
 
 if __name__ == '__main__':

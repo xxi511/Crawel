@@ -12,7 +12,9 @@ class App:
     def start(self):
         if self.config.verify_configuration() == False:
             return
-        self.forum.prepare_driver()
+        if self.forum.prepare_driver() == False:
+            print('Chrome driver 錯誤，請檢察')
+            return
         self.forum.login(self.config.account, self.config.password)
         self.start_crawling()
 

@@ -2,8 +2,8 @@
 from turtle import home
 import requests.packages.urllib3
 from Novel_Crawler.helpers import Support
-from Novel_Crawler.b520 import crawelHome as b520CrawelHome, getArticleList as b520GetArticleList, crawelArticle as b520CrawelArticle
 from Novel_Crawler.book8Crawler import crawelHome as b8CrawelHome, getArticleList as b8GetArticleList, crawelArticle as b8CrawelArticle
+from Novel_Crawler.b520 import crawelHome as b520CrawelHome, getArticleList as b520GetArticleList, crawelArticle as b520CrawelArticle
 from Novel_Crawler.bimiduCrawler import crawelHome as bimCrawelHome, getArticleList as bimGetArticleList, crawelArticle as bimCrawelArticle
 from Novel_Crawler.cnuuCrawler import crawelHome as cnuuCrawelHome, getArticleList as cnuuGetArticleList, crawelArticle as cnuuCrawelArticle
 from Novel_Crawler.czbookCrawler import crawelHome as czCrawelHome, getArticleList as czGetArticleList, crawelArticle as czCrawelArticle
