@@ -19,7 +19,7 @@ Check `Novel_Crawler/helpers.py`
 ## pyinstaller
 
 ```
-$ pyinstaller -F -n AutoPost -w main.py
+$ pyinstaller -F -n AutoPost .\AutoPost.spec
 ```
 
 將 `config/`, `dictionary/`, `driver/`, `data.txt` , `regex.txt`複製到 `dist/` 中
