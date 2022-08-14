@@ -33,7 +33,7 @@ def getArticleList(soup, startChapterName):
 
 
 def crawelArticle(href):
-    soup = helpers.getSoup(href, helpers.Encoding.utf8)
+    soup = helpers.getSoup(href, helpers.Encoding.gbk)
     title = s2tw(soup.select_one('div.bookname h1').get_text())
     content = s2tw(soup.select_one('#content').get_text())
     newContent = format(title + '\n\r\n' + content)

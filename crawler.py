@@ -12,6 +12,7 @@ from Novel_Crawler.hjCrawler import crawelHome as hjCrawelHome, getArticleList a
 from Novel_Crawler.ptwxzCrawler import crawelHome as ptCrawelHome, getArticleList as ptGetArticleList, crawelArticle as ptCrawelArticle
 from Novel_Crawler.quanbenCrawler import crawelHome as quanCrawelHome, getArticleList as quanGetArticleList, crawelArticle as quanCrawelArticle
 from Novel_Crawler.sfCrawler import crawelHome as sfCrawelHome, getArticleList as sfGetArticleList, crawelArticle as sfCrawelArticle
+from Novel_Crawler.sixnineshuCrawler import crawelHome as snCrawelHome, getArticleList as snGetArticleList, crawelArticle as snCrawelArticle
 from Novel_Crawler.uuCrawler import  crawelHome as uuCrawelHome, getArticleList as uuGetArticleList, crawelArticle as uuCrawelArticle
 from Novel_Crawler.wenkuCrawler import crawelHome as wenCrawelHome, getArticleList as wenGetArticleList, crawelArticle as wenCrawelArticle
 from Novel_Crawler.wutuxsCrawler import  crawelHome as wutuxCrawelHome, getArticleList as wutuxGetArticleList, crawelArticle as wutuxCrawelArticle
@@ -35,7 +36,8 @@ class Crawler:
             Support.hj: hjCrawelHome,
             Support.pt: ptCrawelHome, 
             Support.quanben: quanCrawelHome, 
-            Support.sf: sfCrawelHome, 
+            Support.sf: sfCrawelHome,
+            Support.sixnineshu: snCrawelHome,
             Support.uu: uuCrawelHome, 
             Support.wenku: wenCrawelHome, 
             Support.wutuxs: wutuxCrawelHome, 
@@ -57,7 +59,8 @@ class Crawler:
             Support.hj: hjGetArticleList,
             Support.pt: ptGetArticleList, 
             Support.quanben: quanGetArticleList, 
-            Support.sf: sfGetArticleList, 
+            Support.sf: sfGetArticleList,
+            Support.sixnineshu: snGetArticleList,
             Support.uu: uuGetArticleList, 
             Support.wenku: wenGetArticleList, 
             Support.wutuxs: wutuxGetArticleList, 
@@ -77,7 +80,8 @@ class Crawler:
             Support.hj: hjCrawelArticle,
             Support.pt: ptCrawelArticle, 
             Support.quanben: quanCrawelArticle, 
-            Support.sf: sfCrawelArticle, 
+            Support.sf: sfCrawelArticle,
+            Support.sixnineshu: snCrawelArticle,
             Support.uu: uuCrawelArticle, 
             Support.wenku: wenCrawelArticle, 
             Support.wutuxs: wutuxCrawelArticle, 
