@@ -66,8 +66,8 @@ def getArticleList(rootSoup, startChapterName):
 
 def crawelArticle(href):
     chrome = driver.get_selenium(href)
-    chrome.execute_script("return document.querySelector('div.toplink').remove()")
-    chrome.execute_script("return document.querySelector('div.share').remove()")
+    chrome.execute_script("return document.querySelector('div.toplink')?.remove()")
+    chrome.execute_script("return document.querySelector('div.share')?.remove()")
     contentDiv = chrome.find_element_by_css_selector("#content")
     content = contentDiv.text
     chrome.quit()

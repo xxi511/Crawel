@@ -48,6 +48,7 @@ class Forum:
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "lsform"))
         )
+        time.sleep(1)
         driver.find_element_by_css_selector('#ls_username').send_keys(account)
         time.sleep(1)
         driver.find_element_by_css_selector('#ls_password').send_keys(password)
@@ -80,27 +81,34 @@ class Forum:
                 EC.presence_of_element_located((By.ID, "subject"))
             )
             driver.find_element_by_css_selector('#extra_tag_chk').click()
+            time.sleep(1)
+            driver.find_element_by_css_selector('#extra_tag_b').click()
             driver.find_element_by_css_selector('#tags').send_keys(author)
             driver.find_element_by_css_selector('#subject').send_keys(_title)
             driver.find_element_by_css_selector('#e_textarea').send_keys(content)
             self.setSubCategory(driver, subCategoryIdx)
             driver.find_element_by_css_selector('#postsubmit').click()
             return self.checkPostState()
-        except:
+        except Exception as e:
             return 'failed, post novel conver'
 
-    def setSubCategory(self, subCategoryIdx):
-        driver = self.driver
+    def setSubCategory(self, driver, subCategoryIdx):
+        print('1')
         try:
+            print('2')
             ulEle = driver.find_element_by_css_selector('#typeid_ctrl_menu')
-            style = 'width: 80px; position: absolute; z-index: 301; left: 7.2px; top: 298.6px;'
+            print('3')
+            style = 'width: 80px; position: absolute; z-index: 301; left: 10.125px; top: 43.4px;'
+            print('4')
             driver.execute_script(
                 "arguments[0].setAttribute('style', arguments[1])", ulEle, style)
+            print('5')
             eles = driver.find_elements_by_css_selector('#typeid_ctrl_menu ul li')
             for idx, li in enumerate(eles):
                 if idx == subCategoryIdx:
+                    print('6')
                     li.click()
-        except:
+        except Exception as e:
             print('a')
 
     def checkPostState(self):

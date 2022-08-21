@@ -13,6 +13,7 @@ class Support(Enum):
     sixnineshu = 'www.69shu.com'
     b520 = 'www.b520.cc'
     bimidu = 'www.bimidu.com'
+    biquyue = 'www.biquyue.com'
     book8 = '8book.com'
     cnuu = 'cn.uukanshu.cc'
     czbook = 'czbooks.net'
@@ -38,7 +39,7 @@ class Support(Enum):
 
 supports = [
                 Support.sixnineshu,
-                Support.b520, Support.bimidu, Support.book8, 
+                Support.b520, Support.biquyue, Support.bimidu, Support.book8,
                 Support.cnuu, Support.czbook, 
                 Support.hetu, Support.hj,
                 Support.pt, Support.quanben, Support.sf, Support.uu, Support.wenku, Support.wutuxs, 

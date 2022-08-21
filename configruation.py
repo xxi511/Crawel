@@ -46,8 +46,9 @@ class Config:
         parsed_source = urlparse(novel_source)
         parsed_chapter = urlparse(start_capter)
         for site in self.support:
-            if site.value in parsed_source.hostname and site.value in parsed_chapter:
-                return True
+            if site.value in parsed_source.hostname:
+                if site.value in parsed_chapter or start_capter == '':
+                    return True
         print('錯誤！ 不支援的來源網址')
         return False
 
@@ -66,6 +67,8 @@ class Config:
         if isinstance(article_link, str) == False:
             print('錯誤！ article_link 要是網址，範例 "article_link": "https://abc.com"')
             return False
+        if article_link == '':
+            return  True
         parsed_article = urlparse(article_link)
         if 'woodo.club' not in parsed_article.hostname:
             print('錯誤！ article_link 不是 woodo 的')
