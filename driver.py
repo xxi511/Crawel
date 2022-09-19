@@ -38,7 +38,13 @@ def download_driver(version: str):
         os.remove(zip_path)
 
 def driver_path() -> str:
-    return os.path.join(os.getcwd(), driver_name())
+    path = os.path.join(os.getcwd(), driver_name())
+    if os.path.exists(path):
+        return  path
+    else:
+        parent = os.pardir
+        path = os.path.join(parent, driver_name())
+        return  path
 
 def is_driver_exist() -> bool:
     path = driver_path()
@@ -58,7 +64,10 @@ def get_chrome_version() -> str:
 
 def get_selenium(href: str):
     options = Options()
-    options.add_argument('headless')
+    options.add_argument('--headless')
     driver = webdriver.Chrome(driver_path(), chrome_options=options)
     driver.get(href)
     return driver
+
+if __name__ == '__main__':
+    a = driver_path()
