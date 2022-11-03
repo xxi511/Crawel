@@ -2,8 +2,10 @@
 from turtle import home
 import requests.packages.urllib3
 from Novel_Crawler.helpers import Support
+# book8 must be the first one
 from Novel_Crawler.book8Crawler import crawelHome as b8CrawelHome, getArticleList as b8GetArticleList, crawelArticle as b8CrawelArticle
 from Novel_Crawler.b520 import crawelHome as b520CrawelHome, getArticleList as b520GetArticleList, crawelArticle as b520CrawelArticle
+from Novel_Crawler.aixdzCrawler import crawelHome as aixdzCrawelHome, getArticleList as aixdzGetArticleList, crawelArticle as aixdzCrawelArticle
 from Novel_Crawler.bimiduCrawler import crawelHome as bimCrawelHome, getArticleList as bimGetArticleList, crawelArticle as bimCrawelArticle
 from Novel_Crawler.biquyueCrawler import crawelHome as biquCrawelHome, getArticleList as biquGetArticleList, crawelArticle as biquCrawelArticle
 from Novel_Crawler.cnuuCrawler import crawelHome as cnuuCrawelHome, getArticleList as cnuuGetArticleList, crawelArticle as cnuuCrawelArticle
@@ -29,6 +31,7 @@ class Crawler:
     def crawelHome(self, homeLink):
         self.site = Support(homeLink)
         functions = {
+            Support.aixdz: aixdzCrawelHome,
             Support.b520: b520CrawelHome,
             Support.bimidu: bimCrawelHome,
             Support.biquyue: biquCrawelHome,
@@ -54,6 +57,7 @@ class Crawler:
 
     def getArticleList(self, rootSoup, startChapterName):
         functions = {
+            Support.aixdz: aixdzGetArticleList,
             Support.b520: b520GetArticleList,
             Support.bimidu: bimGetArticleList,
             Support.biquyue: biquGetArticleList,
@@ -77,6 +81,7 @@ class Crawler:
 
     def crawelArticle(self, href):
         functions = {
+            Support.aixdz: aixdzCrawelArticle,
             Support.b520: b520CrawelArticle,
             Support.bimidu: bimCrawelArticle,
             Support.biquyue: biquCrawelArticle,

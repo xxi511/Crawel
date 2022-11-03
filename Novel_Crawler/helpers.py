@@ -10,6 +10,7 @@ class Encoding(Enum):
 
 class Support(Enum):
     unknown = 'unknown'
+    aixdz = 'www.aixdzs.com'
     sixnineshu = 'www.69shu.com'
     b520 = 'www.b520.cc'
     bimidu = 'www.bimidu.com'
@@ -39,7 +40,7 @@ class Support(Enum):
         return Support.unknown
 
 supports = [
-                Support.sixnineshu,
+                Support.aixdz, Support.sixnineshu,
                 Support.b520, Support.biquyue, Support.bimidu, Support.book8,
                 Support.cnuu, Support.czbook, Support.ddxs,
                 Support.hetu, Support.hj,

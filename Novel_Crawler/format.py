@@ -70,7 +70,10 @@ def loadData():
     path = os.path.join(parent_dir, 'data.txt')
     with open(path, 'r', encoding='utf-8-sig') as f:
         for line in f:
-            old, new = line[:-1].split('#####')
+            if line == '\n':
+                continue
+            line = line[:-1] if line[-1] == '\n' else line
+            old, new = line.split('#####')
             d = {'olds': old, 'news': new}
             wordDic.append(d)
     return wordDic
