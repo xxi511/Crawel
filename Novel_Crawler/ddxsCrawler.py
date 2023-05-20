@@ -43,7 +43,7 @@ def crawelArticle(href):
 
 
 if __name__ == '__main__':
-    homeLink = 'https://www.ddxs.com/wudiconggangtiexiakaishi/'
+    homeLink = 'https://tw.ddxs.com/mingkejiehao/'
     soup, banner, title, author, state, desc = crawelHome(homeLink)
     hrefs = getArticleList(soup, '')
     for h in hrefs:

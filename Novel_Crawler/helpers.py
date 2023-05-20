@@ -14,18 +14,20 @@ class Support(Enum):
     sixnineshu = 'www.69shu.com'
     b520 = 'www.b520.cc'
     bimidu = 'www.bimidu.com'
-    biquyue = 'www.biquyue.com'
+    biquyue = 'www.xbiquyue.com/'
     book8 = '8book.com'
     cnuu = 'cn.uukanshu.cc'
     czbook = 'czbooks.net'
-    ddxs = 'www.ddxs.com'
+    ddxs = 'tw.ddxs.com/'
     hetu = 'hetushu.com'
     hj = 'tw.hjwzw.com'
     pt = 'www.ptwxz.com'
     quanben = 'www.quanben.io'
     sf = 'book.sfacg.com'
     uu = 'tw.uukanshu.com'
+    # 已關站
     wenku = 'www.wenku8.net'
+    # 已關站
     wutuxs = 'www.wutuxs.com'
     zwdu = 'www.81book.com'
 

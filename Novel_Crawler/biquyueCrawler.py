@@ -50,7 +50,7 @@ def crawelArticle(href):
 
 
 if __name__ == '__main__':
-    homeLink = 'https://www.biquyue.com/book_16338/'
+    homeLink = 'https://www.xbiquyue.com/book_20646/'
     soup, banner, title, author, state, desc = crawelHome(homeLink)
     hrefs = getArticleList(soup, '')
     for h in hrefs:
