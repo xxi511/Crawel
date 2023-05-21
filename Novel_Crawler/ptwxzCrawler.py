@@ -51,6 +51,8 @@ def getArticleList(rootSoup, startChapterName):
     allLinks = soup.select('div.centent ul li a:not([rel])')
     for atag in allLinks:
         href = atag['href']
+        if href == '':
+            continue
         if not shouldStart:
             if startChapterName in atag.get_text():
                 shouldStart = True
@@ -77,7 +79,7 @@ def crawelArticle(href):
     return newContent
 
 if __name__ == '__main__':
-    homeLink = 'https://www.ptwxz.com/bookinfo/9/9207.html'
+    homeLink = 'https://www.ptwxz.com/html/3/3759/'
     # https://tw.hjwzw.com/Book/33924
     # https://tw.hjwzw.com/Book/Chapter/33924
     soup, banner, title, author, state, desc = crawelHome(homeLink)
