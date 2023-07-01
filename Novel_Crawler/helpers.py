@@ -14,12 +14,14 @@ class Support(Enum):
     sixnineshu = 'www.69shu.com'
     b520 = 'www.b520.cc'
     bimidu = 'www.bimidu.com'
+    # 關站了
     biquyue = 'www.xbiquyue.com/'
     book8 = '8book.com'
     cnuu = 'cn.uukanshu.cc'
     czbook = 'czbooks.net'
-    ddxs = 'tw.ddxs.com/'
-    hetu = 'hetushu.com'
+    ddxs = 'tw.ddxs.com'
+    ddxs2 = 'ddxs.com'
+    hetu = 'www.hetushu.com'
     hj = 'tw.hjwzw.com'
     pt = 'www.ptwxz.com'
     quanben = 'www.quanben.io'
@@ -44,7 +46,7 @@ class Support(Enum):
 supports = [
                 Support.aixdz, Support.sixnineshu,
                 Support.b520, Support.biquyue, Support.bimidu, Support.book8,
-                Support.cnuu, Support.czbook, Support.ddxs,
+                Support.cnuu, Support.czbook, Support.ddxs, Support.ddxs2,
                 Support.hetu, Support.hj,
                 Support.pt, Support.quanben, Support.sf, Support.uu, Support.wenku, Support.wutuxs, 
                 Support.zwdu

@@ -56,10 +56,11 @@ def crawelArticle(href):
     return newContent
 
 if __name__ == '__main__':
-    homeLink = 'https://hetushu.com/book/91/index.html'
-    soup, banner, title, author, state, desc = crawelHome(homeLink)
-    hrefs = getArticleList(soup, '')
-    for h in hrefs:
-        a = crawelArticle(h)
-        print(a)
+    a = crawelArticle('https://hetushu.com/book/5636/4205265.html')
+    # homeLink = 'https://hetushu.com/book/91/index.html'
+    # soup, banner, title, author, state, desc = crawelHome(homeLink)
+    # hrefs = getArticleList(soup, '')
+    # for h in hrefs:
+    #     a = crawelArticle(h)
+    #     print(a)
     print('a')

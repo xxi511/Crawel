@@ -11,6 +11,7 @@ from Novel_Crawler.biquyueCrawler import crawelHome as biquCrawelHome, getArticl
 from Novel_Crawler.cnuuCrawler import crawelHome as cnuuCrawelHome, getArticleList as cnuuGetArticleList, crawelArticle as cnuuCrawelArticle
 from Novel_Crawler.czbookCrawler import crawelHome as czCrawelHome, getArticleList as czGetArticleList, crawelArticle as czCrawelArticle
 from Novel_Crawler.ddxsCrawler import crawelHome as ddCrawelHome, getArticleList as ddGetArticleList, crawelArticle as ddCrawelArticle
+from Novel_Crawler.ddxs2 import crawelHome as dd2CrawelHome, getArticleList as dd2GetArticleList, crawelArticle as dd2CrawelArticle
 from Novel_Crawler.hetuCrawler import crawelHome as hetuCrawelHome, getArticleList as hetuGetArticleList, crawelArticle as hetuCrawelArticle
 from Novel_Crawler.hjCrawler import crawelHome as hjCrawelHome, getArticleList as hjGetArticleList, crawelArticle as hjCrawelArticle
 from Novel_Crawler.ptwxzCrawler import crawelHome as ptCrawelHome, getArticleList as ptGetArticleList, crawelArticle as ptCrawelArticle
@@ -39,6 +40,7 @@ class Crawler:
             Support.cnuu: cnuuCrawelHome,
             Support.czbook: czCrawelHome,
             Support.ddxs: ddCrawelHome,
+            Support.ddxs2: dd2CrawelHome,
             Support.hetu: hetuCrawelHome, 
             Support.hj: hjCrawelHome,
             Support.pt: ptCrawelHome, 
@@ -65,6 +67,7 @@ class Crawler:
             Support.cnuu: cnuuGetArticleList,
             Support.czbook: czGetArticleList,
             Support.ddxs: ddGetArticleList,
+            Support.ddxs2: dd2GetArticleList,
             Support.hetu: hetuGetArticleList, 
             Support.hj: hjGetArticleList,
             Support.pt: ptGetArticleList, 
@@ -89,6 +92,7 @@ class Crawler:
             Support.cnuu: cnuuCrawelArticle,
             Support.czbook: czCrawelArticle,
             Support.ddxs: ddCrawelArticle,
+            Support.ddxs2: dd2CrawelArticle,
             Support.hetu: hetuCrawelArticle, 
             Support.hj: hjCrawelArticle,
             Support.pt: ptCrawelArticle, 

@@ -1,4 +1,6 @@
 #coding=utf-8
+import driver
+from selenium.webdriver.common.by import By
 import requests
 from bs4 import BeautifulSoup
 from format import format, s2tw
@@ -45,33 +47,22 @@ def getArticleList(soup, startChapterName):
 
 def crawelArticle(href):
     link = 'https://tw.uukanshu.com/' + href
-    soup = getSoup(link)
-    ads = soup.select('div.ad_content')
-    for ad in ads:
-        ad.decompose()
-
-    html = soup.decode_contents().replace('<p "contnew"="">', '')
-    soup = BeautifulSoup(html, 'html.parser')
-    title = s2tw(soup.select_one('div.h1title h1').get_text())
-    contentEle = soup.select_one('#contentbox')
-    contents = contentEle.select('p')
-    if (len(contents) == 0):
-        contents = contentEle.decode_contents().split('<br/>')
-    else:
-        contents = [content.text for content in contents]
-
+    chrome = driver.get_selenium(link)
+    # title = s2tw(soup.select_one('div.h1title h1').get_text())
+    title = s2tw(chrome.find_element(By.CSS_SELECTOR, 'div.h1title h1').text)
+    contentElements = chrome.find_elements(By.CSS_SELECTOR, '#contentbox p')
+    contents = [element.text for element in contentElements]
     if '最新網址' in contents[0]:
         contents.pop(0)
     content = s2tw('\n'.join(contents))
     newContent = format(title + '\n\r\n' + content)
     return newContent
 
-
 if __name__ == '__main__':
-    # href = '/b/84471/110588.html'
+    # href = 'b/69861/217812.html'
     # a = crawelArticle(href)
 
-    homeLink = 'https://tw.uukanshu.com/b/84471/'
+    homeLink = 'https://tw.uukanshu.com/b/69861/'
     soup, banner, title, author, state, desc = crawelHome(homeLink)
     hrefs = getArticleList(soup, '')
     for h in hrefs:
