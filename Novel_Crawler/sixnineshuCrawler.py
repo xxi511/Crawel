@@ -4,13 +4,13 @@ import helpers
 from urllib.parse import urlparse
 
 def format_homeLink(link: str) -> str:
-    if 'txt' in link:
-        return link
+    parsed = urlparse(link)
+    host = '{}://{}'.format(parsed.scheme, parsed.hostname)
+    path = parsed.path[1:-1]
+    if ''.endswith('.htm'):
+        return '{}/{}'.format(host, path)
     else:
-        parsed = urlparse(link)
-        host = '{}://{}'.format(parsed.scheme, parsed.hostname)
-        path = parsed.path[1:-1]
-        return '{}/txt/{}.htm'.format(host, path)
+        return '{}/{}.htm'.format(host, path)
 
 def format_chapter_link(link: str) -> str:
     if 'txt' in link:
@@ -31,7 +31,7 @@ def crawelHome(homeLink):
     state = '(連載中)'
     desc = ''
 
-    chapter_link = format_chapter_link(homeLink)
+    chapter_link = soup.select_one('div.addbtn a.btn')['href']
     chapter_soup = helpers.getSoup(chapter_link, helpers.Encoding.gbk)
     return chapter_soup, banner, title, author, state, desc
 
@@ -68,7 +68,7 @@ def crawelArticle(href):
 
 
 if __name__ == '__main__':
-    homeLink = 'https://www.69shu.com/43855/'
+    homeLink = 'https://www.69shuba.com/book/45182/'
     soup, banner, title, author, state, desc = crawelHome(homeLink)
     hrefs = getArticleList(soup, '')
     for h in hrefs:
