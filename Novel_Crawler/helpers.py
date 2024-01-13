@@ -11,7 +11,7 @@ class Encoding(Enum):
 class Support(Enum):
     unknown = 'unknown'
     aixdz = 'www.aixdzs.com'
-    sixnineshu = 'www.69shuba.com'
+    sixnineshu = 'www.69xinshu.com'
     b520 = 'www.b520.cc'
     bimidu = 'www.bimidu.com'
     # 關站了

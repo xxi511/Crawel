@@ -15,17 +15,17 @@ def driver_name() -> str:
 def driver_zip_name() -> str:
     sys = platform.system()
     if 'Linux' in sys:
-        return 'chromedriver_linux64.zip'
+        return 'linux64/chromedriver-linux64.zip'
     elif 'Darwin' in sys:
         if 'x86_64' in platform.platform():
-            return 'chromedriver_mac64.zip'
+            return 'mac-arm64/chromedriver-mac-arm64.zip'
         else:
-            return 'chromedriver_mac64_m1.zip'
+            return 'mac-x64/chromedriver-mac-x64.zip'
     elif 'Windows' in sys:
-        return 'chromedriver_win32.zip'
+        return 'win64/chromedriver-win64.zip'
 
 def download_driver(version: str):
-    link = 'https://chromedriver.storage.googleapis.com/{}/{}'.format(version, driver_zip_name())
+    link = 'https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/{}/{}'.format(version, driver_zip_name())
     file_name = wget.download(link)
     with zipfile.ZipFile(file_name, 'r') as zip_ref:
         if is_driver_exist():
