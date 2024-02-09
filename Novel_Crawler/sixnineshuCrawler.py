@@ -57,14 +57,17 @@ def getArticleList(soup, startChapterName):
 
 def crawelArticle(href):
     soup = helpers.getSoup(href, helpers.Encoding.gbk)
-    title = ''#s2tw(soup.select_one('div.txtnav h1.hide720').get_text())
+    title = s2tw(soup.select_one('div.txtnav h1.hide720').get_text())
     txtnav = soup.select_one('div.txtnav')
     removed = ['h1.hide720', 'div.txtinfo', '#txtright', '#bottom-ad']
     for selector in removed:
         [element.decompose() for element in txtnav.select(selector)]
     content = s2tw(txtnav.get_text())
-    newContent = format(title + '\n\r\n' + content)
-    return newContent
+    if title in content:
+        return format(content)
+    else:
+        newContent = format(title + '\n\r\n' + content)
+        return newContent
 
 
 if __name__ == '__main__':
